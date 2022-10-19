@@ -3,21 +3,24 @@ import { v4, validate } from 'uuid'
 /**
  * Identifies an entity.
  */
-export class Identity<TType, Brand> {
-  private _value: TType
+export class Identity<
+  TValueType,
+  TIdentityType
+> {
+  private _value: TValueType
 
   /**
    * Initialize the new instance of the Identity class
    * @param id Value.
    */
-  constructor(value: TType) {
+  constructor(value: TValueType) {
     this._value = value
   }
 
   /**
    * Gets the value of the Identity
    */
-  get value(): TType {
+  get value(): TValueType {
     return this._value
   }
 
@@ -26,14 +29,14 @@ export class Identity<TType, Brand> {
    * @param other Identity to compare to.
    * @returns True if the Identity is equal to the other Identity.
    */
-  equals(other: Identity<TType, Brand>): boolean {
+  equals(other: Identity<TValueType, TIdentityType>): boolean {
     return this.value === other.value
   }
 
   /**
    * Identity brand
    */
-  private __brand__: Brand
+  private __type__: TIdentityType
 }
 
 
