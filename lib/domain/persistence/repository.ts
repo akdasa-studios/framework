@@ -17,6 +17,7 @@ export interface IRepository<
   /**
    * Get entity by identity.
    * @param id Identity of the entity to load.
+   * @throws Error if entity does not exist.
    */
   get(id: TEntity['id']): TEntity
 
@@ -35,6 +36,7 @@ export interface IRepository<
   /**
    * Delete entity by identity.
    * @param id Identity of the entity to remove.
+   * @throws Error if entity does not exist.
    */
   delete(id: TEntity['id']): void
 }

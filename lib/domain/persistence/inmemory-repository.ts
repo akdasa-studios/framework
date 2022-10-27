@@ -1,12 +1,13 @@
 import { Entity, AnyIdentity } from '@lib/domain/models'
 import { IRepository, Predicate, Query, Expression, Binding } from '@lib/domain/persistence'
-import { Operators } from './query'
+import { Operators, LogicalOperators } from '@lib/domain/persistence'
 
 
 export abstract class InMemoryRepository<
   TEntity extends Entity<AnyIdentity>
 > implements IRepository<TEntity> {
-  protected entities: Map<TEntity['id'], TEntity> = new Map()
+  protected entities = new Map<TEntity['id'], TEntity>()
+  protected processor = new InMemoryQueryProcessor<TEntity>()
 
   public save(entity: TEntity): void {
     const copy = Object.create(entity)
@@ -25,33 +26,54 @@ export abstract class InMemoryRepository<
   }
 
   public find(query: Query<TEntity>): readonly TEntity[] {
-    const o = Array.from(this.entities.values())
+    const entities = Array.from(this.entities.values())
+    return this.processor.execute(query, entities)
+  }
 
-    if (query instanceof Predicate) {
-      if (query.operator === Operators.Equal) {
-        return o.filter(x => this.getFieldValue(query.field, x) === query.value)
-      }
+  public delete(id: TEntity['id']): void {
+    if (!this.exists(id)) {
+      throw new Error(`Entity '${id.value}' not found`)
+    }
+    this.entities.delete(id.value)
+  }
+}
 
-    } else if (query instanceof Expression) {
-      if (query.operator === 'and') {
-        const arrays = query.query.map(e => this.find(e as Predicate<TEntity>))
-        return arrays.reduce((a, b) => a.filter(ele => b.includes(ele)))
-      } else if (query.operator === 'or') {
-        return [...new Set(query.query.flatMap(e => this.find(e as Predicate<TEntity>)))]
-      }
-      // if (q.operator === 'or') { return q.expressions.reduce((a, b) => a.concat(fetch(b, a)), o) }
-      // if (q.operator === 'not') { return o.filter(x => !fetch(q.expressions[0], [x]).length) }
+
+class InMemoryQueryProcessor<
+  TEntity extends Entity<AnyIdentity>
+> {
+  public execute(query: Query<TEntity>, entities: TEntity[]): readonly TEntity[] {
+    return query instanceof Predicate
+      ? this.processPrdicate(query, entities)
+      : this.processExpression(query, entities)
+  }
+
+  private processPrdicate(predicate: Predicate<TEntity>, entities: TEntity[]) : readonly TEntity[] {
+    type a = {[ky: string]: (a: any, b: any) => boolean}
+    const ops: a = {
+      [Operators.Equal]: (a, b) => a === b,
+      [Operators.GreaterThan]: (a, b) => a > b,
+      [Operators.GreaterThanOrEqual]: (a, b) => a >= b,
+      [Operators.LessThan]: (a, b) => a < b,
+      [Operators.LessThanOrEqual]: (a, b) => a <= b,
+      [Operators.In]: (a, b) => b.includes(a),
+    }
+    const op = ops[predicate.operator]
+    return entities.filter(x => op(this.getFieldValue(predicate.field, x), predicate.value))
+  }
+
+  private processExpression(expression: Expression<TEntity>, entities: TEntity[]) : readonly TEntity[] {
+    if (expression.operator === LogicalOperators.And) {
+      const arrays = expression.query.map(e => this.execute(e, entities))
+      return arrays.reduce((a, b) => a.filter(ele => b.includes(ele)))
+    } else if (expression.operator === LogicalOperators.Or) {
+      return [...new Set(expression.query.flatMap(e => this.execute(e, entities)))]
     }
     return []
   }
 
-  public delete(id: TEntity['id']): void {
-    this.entities.delete(id.value)
-  }
-
-  protected getFieldValue(f: Binding<TEntity>, o: TEntity) {
+  private getFieldValue(f: Binding<TEntity>, o: TEntity) {
     if (typeof f === 'string') {
-      // console.log(f, o[f])
       return o[f as string]
     }
   }

@@ -25,7 +25,7 @@ describe('InMemoryRepository', () => {
   /* -------------------------------------------------------------------------- */
 
   describe('.save', () => {
-    it('saves entity in memory', () => {
+    it('saves entity', () => {
       expect(() => repository.exists(id)).toBeTruthy()
     })
 
@@ -67,8 +67,24 @@ describe('InMemoryRepository', () => {
     })
 
     it('returns false if entity does not exist', () => {
-      const idNotFound = new FakeEntityId('404')
+      const idNotFound = new FakeEntityId('notFound')
       expect(repository.exists(idNotFound)).toBeFalsy()
+    })
+  })
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   delete                                   */
+  /* -------------------------------------------------------------------------- */
+
+  describe('.delete', () => {
+    it('deletes entity', () => {
+      repository.delete(id)
+      expect(repository.exists(id)).toBeFalsy()
+    })
+
+    it('throws error if entity does not exist', () => {
+      const idNotFound = new FakeEntityId('notFound')
+      expect(() => repository.delete(idNotFound)).toThrowError()
     })
   })
 
@@ -77,24 +93,16 @@ describe('InMemoryRepository', () => {
   /* -------------------------------------------------------------------------- */
 
   describe('.find', () => {
-    it('returns entity by field if equal', () => {
+    it('returns entities if found', () => {
       const query = q.eq('firstName', 'John')
       const result = repository.find(query)
       expect(result).toEqual([entity])
     })
 
-    it('returns epty array if nothing found', () => {
+    it('returns empty array if nothing found', () => {
       const query = q.eq('firstName', 'not-found')
       const result = repository.find(query)
       expect(result).toEqual([])
     })
-
-    // it('returns undefined if entity does not exist', () => {
-    //   const repository = new FakeInMemoryRepository()
-    //   const id = new FakeEntityId('123')
-
-    //   const result = repository.find(id)
-    //   expect(result).toBeUndefined()
-    // })
   })
 })

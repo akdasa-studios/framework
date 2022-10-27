@@ -16,7 +16,7 @@ export enum Operators {
 /**
  * Logical operators. These are used to combine multiple predicates.
  */
-enum LogicalOperators {
+export enum LogicalOperators {
   And = 'and',
   Or = 'or',
   Not = 'not',
