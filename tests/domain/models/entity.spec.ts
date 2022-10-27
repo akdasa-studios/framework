@@ -1,10 +1,5 @@
-import { Entity, Identity } from '@lib/domain/models'
+import { FakeEntityId, FakeEntity } from '../env'
 
-class FakeEntityId extends Identity<string, 'FakeEntity'> { }
-
-class FakeEntity extends Entity<FakeEntityId> {
-  constructor(id: FakeEntityId) { super(id) }
-}
 
 describe('Entity', () => {
 
