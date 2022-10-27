@@ -8,16 +8,16 @@ class FakeInMemoryRepository
 { }
 
 describe('InMemoryRepository', () => {
-  let id: FakeEntityId
-  let entity: FakeEntity
+  let johnDoe: FakeEntity
+  let alexSmith: FakeEntity
   let repository: FakeInMemoryRepository
   const q = new QueryBuilder<FakeEntity>()
 
   beforeEach(() => {
-    id = new FakeEntityId('123')
-    entity = new FakeEntity(id)
+    johnDoe = new FakeEntity(new FakeEntityId('123'), 'John', 'Doe', 33)
+    alexSmith = new FakeEntity(new FakeEntityId('1234'), 'Alex', 'Smith', 50)
     repository = new FakeInMemoryRepository()
-    repository.save(entity)
+    repository.save(johnDoe)
   })
 
   /* -------------------------------------------------------------------------- */
@@ -26,18 +26,18 @@ describe('InMemoryRepository', () => {
 
   describe('.save', () => {
     it('saves entity', () => {
-      expect(() => repository.exists(id)).toBeTruthy()
+      expect(() => repository.exists(johnDoe.id)).toBeTruthy()
     })
 
     it('do not update entity until it saved', () => {
-      entity.firstName = 'George'
-      expect(repository.get(id).firstName).toEqual('John')
+      johnDoe.firstName = 'George'
+      expect(repository.get(johnDoe.id).firstName).toEqual('John')
     })
 
     it('updates entity if it saved', () => {
-      entity.firstName = 'George'
-      repository.save(entity)
-      expect(repository.get(id).firstName).toEqual('George')
+      johnDoe.firstName = 'George'
+      repository.save(johnDoe)
+      expect(repository.get(johnDoe.id).firstName).toEqual('George')
     })
   })
 
@@ -47,13 +47,13 @@ describe('InMemoryRepository', () => {
 
   describe('.get', () => {
     it('returns entity', () => {
-      const result = repository.get(id)
-      expect(result.equals(entity)).toBeTruthy()
+      const result = repository.get(johnDoe.id)
+      expect(result.equals(johnDoe)).toBeTruthy()
     })
 
     it('throws error if entity does not exist', () => {
       const idNotFound = new FakeEntityId('notFound')
-      expect(() => repository.get(idNotFound)).toThrowError()
+      expect(() => repository.get(idNotFound)).toThrowError('Entity \'notFound\' not found')
     })
   })
 
@@ -63,7 +63,7 @@ describe('InMemoryRepository', () => {
 
   describe('.exists', () => {
     it('returns true if entity exists', () => {
-      expect(repository.exists(id)).toBeTruthy()
+      expect(repository.exists(johnDoe.id)).toBeTruthy()
     })
 
     it('returns false if entity does not exist', () => {
@@ -78,13 +78,13 @@ describe('InMemoryRepository', () => {
 
   describe('.delete', () => {
     it('deletes entity', () => {
-      repository.delete(id)
-      expect(repository.exists(id)).toBeFalsy()
+      repository.delete(johnDoe.id)
+      expect(repository.exists(johnDoe.id)).toBeFalsy()
     })
 
     it('throws error if entity does not exist', () => {
       const idNotFound = new FakeEntityId('notFound')
-      expect(() => repository.delete(idNotFound)).toThrowError()
+      expect(() => repository.delete(idNotFound)).toThrowError('Entity \'notFound\' not found')
     })
   })
 
@@ -96,7 +96,7 @@ describe('InMemoryRepository', () => {
     it('returns entities if found', () => {
       const query = q.eq('firstName', 'John')
       const result = repository.find(query)
-      expect(result).toEqual([entity])
+      expect(result).toEqual([johnDoe])
     })
 
     it('returns empty array if nothing found', () => {
