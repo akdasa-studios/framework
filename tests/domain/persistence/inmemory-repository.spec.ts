@@ -1,5 +1,5 @@
 import { InMemoryRepository } from '@lib/domain/persistence'
-import { QueryBuilder } from '@lib/domain/persistence/query'
+import { Expression, LogicalOperators, QueryBuilder } from '@lib/domain/persistence/query'
 import { FakeEntity, FakeEntityId } from '../env'
 
 
@@ -18,6 +18,7 @@ describe('InMemoryRepository', () => {
     alexSmith = new FakeEntity(new FakeEntityId('1234'), 'Alex', 'Smith', 50)
     repository = new FakeInMemoryRepository()
     repository.save(johnDoe)
+    repository.save(alexSmith)
   })
 
   /* -------------------------------------------------------------------------- */
@@ -103,6 +104,74 @@ describe('InMemoryRepository', () => {
       const query = q.eq('firstName', 'not-found')
       const result = repository.find(query)
       expect(result).toEqual([])
+    })
+
+    it('raises exception if wrong logical operator passed', () => {
+      const query = new Expression<FakeEntity>(
+        'wrong' as LogicalOperators, q.eq('firstName', 'John')
+      )
+      expect(() => repository.find(query)).toThrowError('Invalid operator \'wrong\'')
+    })
+
+    describe('complex query', () => {
+      it('not', () => {
+        const query = q.not(
+          q.eq('firstName', 'John'),
+        )
+        const result = repository.find(query)
+        expect(result).toEqual([alexSmith])
+      })
+
+      it('or', () => {
+        const query = q.or(
+          q.eq('firstName', 'John'),
+          q.eq('firstName', 'Alex'),
+        )
+        const result = repository.find(query)
+        expect(result).toEqual([johnDoe, alexSmith])
+      })
+
+      it('and', () => {
+        const query = q.and(
+          q.eq('firstName', 'John'),
+          q.eq('age', 33),
+        )
+        const result = repository.find(query)
+        expect(result).toEqual([johnDoe])
+      })
+
+      it('and 2', () => {
+        const query = q.and(
+          q.eq('firstName', 'John'),
+          q.eq('age', 55),
+        )
+        const result = repository.find(query)
+        expect(result).toEqual([])
+      })
+
+      it('gte', () => {
+        const query = q.gte('age', 50)
+        const result = repository.find(query)
+        expect(result).toEqual([alexSmith])
+      })
+
+      it('lte', () => {
+        const query = q.lte('age', 33)
+        const result = repository.find(query)
+        expect(result).toEqual([johnDoe])
+      })
+
+      it('gt', () => {
+        const query = q.gt('age', 33)
+        const result = repository.find(query)
+        expect(result).toEqual([alexSmith])
+      })
+
+      it('lt', () => {
+        const query = q.lt('age', 50)
+        const result = repository.find(query)
+        expect(result).toEqual([johnDoe])
+      })
     })
   })
 })

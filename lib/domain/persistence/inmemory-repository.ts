@@ -68,13 +68,14 @@ class InMemoryQueryProcessor<
       return arrays.reduce((a, b) => a.filter(ele => b.includes(ele)))
     } else if (expression.operator === LogicalOperators.Or) {
       return [...new Set(expression.query.flatMap(e => this.execute(e, entities)))]
+    } else if (expression.operator === LogicalOperators.Not) {
+      const excluded = expression.query.flatMap(e => this.execute(e, entities))
+      return entities.filter(x => !excluded.includes(x))
     }
-    return []
+    throw new Error(`Invalid operator '${expression.operator}'`)
   }
 
   private getFieldValue(f: Binding<TEntity>, o: TEntity) {
-    if (typeof f === 'string') {
-      return o[f as string]
-    }
+    return o[f as string]
   }
 }

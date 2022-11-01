@@ -26,7 +26,7 @@ export enum LogicalOperators {
  * Binding between Entity field and database column.
  */
 export type Binding<TEntity extends Entity<AnyIdentity>> =
-  keyof TEntity | ((x: TEntity) => void)
+  keyof TEntity // todo: | ((x: TEntity) => void)
 
 /**
  * A predicate is a comparison between a field and a value.
@@ -59,12 +59,33 @@ export type Query<TEntity extends Entity<AnyIdentity>> = Predicate<TEntity> | Ex
 
 
 export class QueryBuilder<TEntity extends Entity<AnyIdentity>> {
+
   /* -------------------------------------------------------------------------- */
   /*                            Comparison Operators                            */
   /* -------------------------------------------------------------------------- */
 
+  op(field: keyof TEntity, operator: Operators, value: unknown): Query<TEntity> {
+    return new Predicate<TEntity>(field, operator, value)
+  }
+
   eq(field: keyof TEntity, value: unknown): Query<TEntity> {
-    return new Predicate<TEntity>(field, Operators.Equal, value)
+    return this.op(field, Operators.Equal, value)
+  }
+
+  gte(field: keyof TEntity, value: unknown): Query<TEntity> {
+    return this.op(field, Operators.GreaterThanOrEqual, value)
+  }
+
+  gt(field: keyof TEntity, value: unknown): Query<TEntity> {
+    return this.op(field, Operators.GreaterThan, value)
+  }
+
+  lte(field: keyof TEntity, value: unknown): Query<TEntity> {
+    return this.op(field, Operators.LessThanOrEqual, value)
+  }
+
+  lt(field: keyof TEntity, value: unknown): Query<TEntity> {
+    return this.op(field, Operators.LessThan, value)
   }
 
   /* -------------------------------------------------------------------------- */
