@@ -5,6 +5,7 @@ flowchart LR
     Aggregate-->|access with|Repository
     Aggregate-->|encapsulates|Entity
     Aggregate-->|encapsulates|ValueObject
+    Repository-->|uses|Query
 ```
 
 # Identity
@@ -104,15 +105,24 @@ clientRepository.save(client)
 
 
 # Query
+Use _QueryBuilder_ to create a query for specific _Entity_. You can create parametric queries and reuse it later.
+
 ```js
 import { QueryBuilder } from '@lib/domain/persistence'
 
 const q = new QueryBuilder<Client>()
-clientRepository.find(q.eq('name.firstName', 'John'))
-clientRepository.find(
-  q.or(
-    q.eq('name.firstName', 'John'),
-    q.eq('name.firstName', 'Jane')
-  )
+
+// Build queries using builder methods
+const commonLastName = q.or(
+  q.eq('name.lastName', 'Smith'),
+  q.eq('name.lastName', 'Jones'),
+  q.eq('name.lastName', 'Williams'),
 )
+
+// Use parametric query
+const olderThan = (age: number) => q.gte('age', age)
+const adult = olderThan(18)
+
+// Execute query
+clientRepository.find(q.and(adult, commonLastName))
 ```
