@@ -66,7 +66,7 @@ class InMemoryQueryProcessor<
     if (expression.operator === LogicalOperators.And) {
       const arrays = expression.query.map(e => this.execute(e, entities))
       return arrays.reduce((a, b) => a.filter(ele => b.includes(ele)))
-    } else if (expresxsion.operator === LogicalOperators.Or) {
+    } else if (expression.operator === LogicalOperators.Or) {
       return [...new Set(expression.query.flatMap(e => this.execute(e, entities)))]
     } else if (expression.operator === LogicalOperators.Not) {
       const excluded = expression.query.flatMap(e => this.execute(e, entities))
