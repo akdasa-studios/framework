@@ -1,21 +1,21 @@
 import { InMemoryRepository } from '@lib/domain/persistence'
 import { Expression, LogicalOperators, QueryBuilder } from '@lib/domain/persistence/query'
-import { FakeEntity, FakeEntityId } from '../env'
+import { Order, OrderId } from '../env'
 
 
 class FakeInMemoryRepository
-  extends InMemoryRepository<FakeEntity>
+  extends InMemoryRepository<Order>
 { }
 
 describe('InMemoryRepository', () => {
-  let johnDoe: FakeEntity
-  let alexSmith: FakeEntity
+  let johnDoe: Order
+  let alexSmith: Order
   let repository: FakeInMemoryRepository
-  const q = new QueryBuilder<FakeEntity>()
+  const q = new QueryBuilder<Order>()
 
   beforeEach(() => {
-    johnDoe = new FakeEntity(new FakeEntityId('123'), 'John', 'Doe', 33)
-    alexSmith = new FakeEntity(new FakeEntityId('1234'), 'Alex', 'Smith', 50)
+    johnDoe = new Order(new OrderId('123'), 'John', 'Doe', 33)
+    alexSmith = new Order(new OrderId('1234'), 'Alex', 'Smith', 50)
     repository = new FakeInMemoryRepository()
     repository.save(johnDoe)
     repository.save(alexSmith)
@@ -53,7 +53,7 @@ describe('InMemoryRepository', () => {
     })
 
     it('throws error if entity does not exist', () => {
-      const idNotFound = new FakeEntityId('notFound')
+      const idNotFound = new OrderId('notFound')
       expect(() => repository.get(idNotFound)).toThrowError('Entity \'notFound\' not found')
     })
   })
@@ -68,7 +68,7 @@ describe('InMemoryRepository', () => {
     })
 
     it('returns false if entity does not exist', () => {
-      const idNotFound = new FakeEntityId('notFound')
+      const idNotFound = new OrderId('notFound')
       expect(repository.exists(idNotFound)).toBeFalsy()
     })
   })
@@ -84,7 +84,7 @@ describe('InMemoryRepository', () => {
     })
 
     it('throws error if entity does not exist', () => {
-      const idNotFound = new FakeEntityId('notFound')
+      const idNotFound = new OrderId('notFound')
       expect(() => repository.delete(idNotFound)).toThrowError('Entity \'notFound\' not found')
     })
   })
@@ -107,7 +107,7 @@ describe('InMemoryRepository', () => {
     })
 
     it('raises exception if wrong logical operator passed', () => {
-      const query = new Expression<FakeEntity>(
+      const query = new Expression<Order>(
         'wrong' as LogicalOperators, q.eq('firstName', 'John')
       )
       expect(() => repository.find(query)).toThrowError('Invalid operator \'wrong\'')

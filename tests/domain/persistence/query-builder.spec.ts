@@ -1,10 +1,10 @@
 import { Operators, QueryBuilder } from '@lib/domain/persistence/query'
-import { FakeEntity } from '../env'
+import { Order } from '../env'
 
 
 describe('QueryBuilder', () => {
 
-  const q = new QueryBuilder<FakeEntity>()
+  const q = new QueryBuilder<Order>()
 
   it('should create a query', () => {
     const query = q.eq('firstName', 'John')

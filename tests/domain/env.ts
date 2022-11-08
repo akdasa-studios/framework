@@ -1,15 +1,23 @@
-import { Aggregate, Identity } from '@lib/domain/models'
+import { Aggregate, Entity, Identity } from '@lib/domain/models'
 
 
-export class FakeEntityId
-  extends Identity<string, 'FakeEntity'> {
-}
+export class OrderId extends Identity<string, 'Order'> {}
+export class OrderLineId extends Identity<string, 'OrderLine'> {}
 
-export class FakeEntity
-  extends Aggregate<FakeEntityId>
+export class OrderLine
+  extends Entity<OrderLineId>
 {
   constructor(
-    id: FakeEntityId,
+    id: OrderLineId,
+    public product: string='John',
+  ) { super(id) }
+}
+
+export class Order
+  extends Aggregate<OrderId>
+{
+  constructor(
+    id: OrderId,
     public firstName: string='John',
     public lastName: string='Doe',
     public age: number=33,
