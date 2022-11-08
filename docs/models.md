@@ -12,7 +12,7 @@ flowchart LR
 Each _Entity_ has its _Identity_. If the identities are equal, then the objects are equal.
 
 ```js
-import { Identity } from '@lib/domain/models'
+import { Identity } from '@akdasa-studios/framework/domain/models'
 
 class ProductId extends Identity<string, 'Product'> {}
 var product1Id = new ProductId('1')
@@ -26,7 +26,7 @@ if (product1Id.equals(product2Id)) {
 We can also create several types of identifiers. This will help us avoid comparison/assignment of identifiers of different types. For example, we can create a _ProductId_ and _OrderId_:
 
 ```js
-import { Identity } from '@lib/domain/models'
+import { Identity } from '@akdasa-studios/framework/domain/models'
 
 class ProductId extends Identity<string, 'Product'> {}
 class OrderId extends Identity<string, 'Order'> {}
@@ -44,9 +44,9 @@ if (product1Id.equals(order1Id)) {
 Value Object is an object that contains some data and does not have an identity. It is used to describe some value, for example, the price of the product. The value object is immutable. It means that the value object cannot be changed after creation. If you need to change the value, you need to create a new value object.
 
 ```js
-import { Value } from '@lib/domain/models'
+import { Value } from '@akdasa-studios/framework/domain/models'
 
-class SkuCode extends Value<'ProductionInfo'> {
+class SkuCode extends Value<'SkuCode'> {
   constructor(
     public readonly itemName: string,
     public readonly attribute1?: string,
@@ -70,7 +70,7 @@ _Entity_ is a class that has an _Identity_. An _Entity_ cannot be fetched or sav
 
 
 ```js
-import { UuidIdentity } from '@lib/domain/models'
+import { UuidIdentity } from '@akdasa-studios/framework/domain/models'
 
 class OrderLineId extends UuidIdentity<'OrderLine'> {}
 
@@ -90,7 +90,7 @@ class OrderLine extends Entity<OrderLineId> {
 _Aggregate_ is a class that encapsulates _Entity_ and _ValueObject_. It is used to describe some business logic. For example, we can create an _Order_ aggregate that will contain _OrderLine_ entities and _Price_ value objects.
 
 ```js
-import { UuidIdentity } from '@lib/domain/models'
+import { UuidIdentity } from '@akdasa-studios/framework/domain/models'
 
 class OrderId extends UuidIdentity<'Order'> {}
 
@@ -114,7 +114,7 @@ class Order extends Aggregate<OrderId> {
 _Repository_ is a class that stores _Aggregates_ and provides access to them.
 
 ```js
-import { InMemoryRepository } from '@lib/domain/persistence'
+import { InMemoryRepository } from '@akdasa-studios/framework/domain/persistence'
 
 class OrderRepository extends InMemoryRepository<Order> {}
 
@@ -131,21 +131,20 @@ orderRepository.save(order)
 Use _QueryBuilder_ to create a query for specific _Aggregate_. You can create parametric queries and reuse it later.
 
 ```js
-import { QueryBuilder } from '@lib/domain/persistence'
+import { QueryBuilder } from '@akdasa-studios/framework/domain/persistence'
 
-const q = new QueryBuilder<Client>()
+const q = new QueryBuilder<Order>()
 
 // Build queries using builder methods
-const commonLastName = q.or(
-  q.eq('name.lastName', 'Smith'),
-  q.eq('name.lastName', 'Jones'),
-  q.eq('name.lastName', 'Williams'),
+const tastyDishes = q.or(
+  q.eq('sku.itemName', 'Lassi'),
+  q.eq('sku.itemName', 'Dosa'),
 )
 
 // Use parametric query
-const olderThan = (age: number) => q.gte('age', age)
-const adult = olderThan(18)
+const moreExpensiveThan = (price: number) => q.gte('price', price)
+const goldenOrders = moreExpensiveThan(1000)
 
 // Execute query
-clientRepository.find(q.and(adult, commonLastName))
+clientRepository.find(q.and(goldenOrders, commonLastName))
 ```
