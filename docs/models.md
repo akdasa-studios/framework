@@ -14,27 +14,27 @@ Each _Entity_ has its _Identity_. If the identities are equal, then the objects 
 ```js
 import { Identity } from '@lib/domain/models'
 
-type ClientId = Identity<string, 'Client'>
-var client1Id = ClientId('1')
-var client2Id = ClientId('2')
+class ProductId extends Identity<string, 'Product'> {}
+var product1Id = new ProductId('1')
+var product2Id = new ProductId('2')
 
-if (client1Id.equals(client2Id)) {
+if (product1Id.equals(product2Id)) {
   // ...
 }
 ```
 
-We can also create several types of identifiers. This will help us avoid comparison/assignment of identifiers of different types. For example, we can create a _ClientId_ and _OrderId_:
+We can also create several types of identifiers. This will help us avoid comparison/assignment of identifiers of different types. For example, we can create a _ProductId_ and _OrderId_:
 
 ```js
 import { Identity } from '@lib/domain/models'
 
-class ClientId extends Identity<string, 'Client'> {}
+class ProductId extends Identity<string, 'Product'> {}
 class OrderId extends Identity<string, 'Order'> {}
 
-var client1Id = new ClientId('1')
+var product1Id = new ProductId('1')
 var order1Id = new OrderId('1')
 
-if (client1Id.equals(order1Id)) {
+if (product1Id.equals(order1Id)) {
   // compilation error
 }
 ```
@@ -46,35 +46,39 @@ Value Object is an object that contains some data and does not have an identity.
 ```js
 import { Value } from '@lib/domain/models'
 
-class Name extends Value<'Name'> {
+class SkuCode extends Value<'ProductionInfo'> {
   constructor(
-    public readonly firstName: string,
-    public readonly lastName: string,
+    public readonly itemName: string,
+    public readonly attribute1?: string,
+    public readonly attribute2?: string,
   ) { super() }
 
-  isNamesake(other: Name) : boolean {
-    return this.firstName === other.firstName
+  isSameItemName(other: SkuCode) : boolean {
+    return this.itemName === other.itemName
   }
 }
 
-const name1 = new Name('Tulasi', 'Dasa')
-const name2 = new Name('Krishna', 'Dasa')
-name1.equals(name2)  // false
+const sku1 = new SkuCode('Lassi', 'Chikku')
+const sku2 = new SkuCode('Lassi', 'Banana')
+sku1.equals(sku2)  // false
+sku1.isSameItemName(sku2)  // true
 ```
 
 
 # Entity
-_Entity_ is a class that has an _Identity_.
+_Entity_ is a class that has an _Identity_. An _Entity_ cannot be fetched or saved directly via _Repository_. An _Entity_ must be a part of _Aggregate_.
+
 
 ```js
 import { UuidIdentity } from '@lib/domain/models'
 
-class ClientId extends UuidIdentity<'Client'> {}
+class OrderLineId extends UuidIdentity<'OrderLine'> {}
 
-class Client extends Entity<ClientId> {
+class OrderLine extends Entity<OrderLineId> {
   constructor(
-    public name: Name,
-    id?: ClientId
+    public readonly product: Product,
+    public readonly quantity: number,
+    id?: OrderLineId
   ) {
     super(id || new UuidIdentity())
   }
@@ -82,30 +86,49 @@ class Client extends Entity<ClientId> {
 ```
 
 
+# Aggregate
+_Aggregate_ is a class that encapsulates _Entity_ and _ValueObject_. It is used to describe some business logic. For example, we can create an _Order_ aggregate that will contain _OrderLine_ entities and _Price_ value objects.
+
+```js
+import { UuidIdentity } from '@lib/domain/models'
+
+class OrderId extends UuidIdentity<'Order'> {}
+
+class Order extends Aggregate<OrderId> {
+  constructor(
+    public readonly lines: OrderLine[],
+    public readonly price: Price,
+    id?: OrderId
+  ) {
+    super(id || new UuidIdentity())
+  }
+
+  addLine(line: OrderLine) {
+    this.lines.push(line)
+  }
+}
+```
+
+
 # Repository
-_Repository_ is a class that stores _Entities_ and provides access to them. The repository is used to save and retrieve _Entities_.
+_Repository_ is a class that stores _Aggregates_ and provides access to them.
 
 ```js
 import { InMemoryRepository } from '@lib/domain/persistence'
 
-class ClientRepository extends InMemoryRepository<Client> {}
+class OrderRepository extends InMemoryRepository<Order> {}
 
-const clientRepository = new ClientRepository()
-const client = new Client(new Name('John', 'Doe'))
-clientRepository.save(client)
-```
-
-To update the _Entity_, you need to save it again:
-
-```js
-const client = clientRepository.get(uuid)
-client.name = new Name('Karl', 'Smith')
-clientRepository.save(client)
+const orderRepository = new OrderRepository()
+const order = new Order([
+  new OrderLine(new Product(...), 1),
+  new OrderLine(new Product(...), 2),
+])
+orderRepository.save(order)
 ```
 
 
 # Query
-Use _QueryBuilder_ to create a query for specific _Entity_. You can create parametric queries and reuse it later.
+Use _QueryBuilder_ to create a query for specific _Aggregate_. You can create parametric queries and reuse it later.
 
 ```js
 import { QueryBuilder } from '@lib/domain/persistence'

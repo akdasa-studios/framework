@@ -1,4 +1,4 @@
-import { Entity, AnyIdentity } from '@lib/domain/models'
+import { Aggregate, AnyIdentity } from '@lib/domain/models'
 
 
 /**
@@ -25,13 +25,13 @@ export enum LogicalOperators {
 /**
  * Binding between Entity field and database column.
  */
-export type Binding<TEntity extends Entity<AnyIdentity>> =
+export type Binding<TEntity extends Aggregate<AnyIdentity>> =
   keyof TEntity // todo: | ((x: TEntity) => void)
 
 /**
  * A predicate is a comparison between a field and a value.
  */
-export class Predicate<TEntity extends Entity<AnyIdentity>> {
+export class Predicate<TEntity extends Aggregate<AnyIdentity>> {
   constructor(
     public readonly field: Binding<TEntity>,
     public readonly operator: Operators,
@@ -42,7 +42,7 @@ export class Predicate<TEntity extends Entity<AnyIdentity>> {
 /**
  *
  */
-export class Expression<TEntity extends Entity<AnyIdentity>> {
+export class Expression<TEntity extends Aggregate<AnyIdentity>> {
   public operator: LogicalOperators
   public query: Query<TEntity>[]
 
@@ -55,10 +55,10 @@ export class Expression<TEntity extends Entity<AnyIdentity>> {
   }
 }
 
-export type Query<TEntity extends Entity<AnyIdentity>> = Predicate<TEntity> | Expression<TEntity>
+export type Query<TEntity extends Aggregate<AnyIdentity>> = Predicate<TEntity> | Expression<TEntity>
 
 
-export class QueryBuilder<TEntity extends Entity<AnyIdentity>> {
+export class QueryBuilder<TEntity extends Aggregate<AnyIdentity>> {
 
   /* -------------------------------------------------------------------------- */
   /*                            Comparison Operators                            */

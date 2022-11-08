@@ -1,4 +1,4 @@
-import { AnyIdentity, Entity } from '@lib/domain/models'
+import { AnyIdentity, Aggregate } from '@lib/domain/models'
 import { Query } from '@lib/domain/persistence'
 
 
@@ -6,7 +6,7 @@ import { Query } from '@lib/domain/persistence'
  * Interface for a repository.
  */
 export interface IRepository<
-  TEntity extends Entity<AnyIdentity>
+  TEntity extends Aggregate<AnyIdentity>
 > {
   /**
    * Save entity.

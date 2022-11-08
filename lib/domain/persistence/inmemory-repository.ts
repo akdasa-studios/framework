@@ -1,10 +1,10 @@
-import { Entity, AnyIdentity } from '@lib/domain/models'
+import { Aggregate, AnyIdentity } from '@lib/domain/models'
 import { IRepository, Predicate, Query, Expression, Binding } from '@lib/domain/persistence'
 import { Operators, LogicalOperators } from '@lib/domain/persistence'
 
 
 export abstract class InMemoryRepository<
-  TEntity extends Entity<AnyIdentity>
+  TEntity extends Aggregate<AnyIdentity>
 > implements IRepository<TEntity> {
   protected entities = new Map<TEntity['id'], TEntity>()
   protected processor = new InMemoryQueryProcessor<TEntity>()
@@ -40,7 +40,7 @@ export abstract class InMemoryRepository<
 
 
 class InMemoryQueryProcessor<
-  TEntity extends Entity<AnyIdentity>
+  TEntity extends Aggregate<AnyIdentity>
 > {
   public execute(query: Query<TEntity>, entities: TEntity[]): readonly TEntity[] {
     return query instanceof Predicate
@@ -66,7 +66,7 @@ class InMemoryQueryProcessor<
     if (expression.operator === LogicalOperators.And) {
       const arrays = expression.query.map(e => this.execute(e, entities))
       return arrays.reduce((a, b) => a.filter(ele => b.includes(ele)))
-    } else if (expression.operator === LogicalOperators.Or) {
+    } else if (expresxsion.operator === LogicalOperators.Or) {
       return [...new Set(expression.query.flatMap(e => this.execute(e, entities)))]
     } else if (expression.operator === LogicalOperators.Not) {
       const excluded = expression.query.flatMap(e => this.execute(e, entities))

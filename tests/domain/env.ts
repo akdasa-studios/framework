@@ -1,4 +1,4 @@
-import { Entity, Identity } from '@lib/domain/models'
+import { Aggregate, Identity } from '@lib/domain/models'
 
 
 export class FakeEntityId
@@ -6,7 +6,7 @@ export class FakeEntityId
 }
 
 export class FakeEntity
-  extends Entity<FakeEntityId>
+  extends Aggregate<FakeEntityId>
 {
   constructor(
     id: FakeEntityId,
