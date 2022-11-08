@@ -26,6 +26,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^4.28.5",
     "@stryker-mutator/core": "^6.2.3",
     "@stryker-mutator/jest-runner": "^6.2.3",
     "@stryker-mutator/typescript-checker": "^6.2.3",
