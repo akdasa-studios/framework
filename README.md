@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/framework.png" height="96px"/>
+  <img src="https://raw.githubusercontent.com/akdasa-studios/framework/main/docs/framework.png" height="96px"/>
 </p>
 
 _Framework_ is a simple library we use to build our application. It is based on _Domain Driven Development_ principles. The goals of that framework are to help with:

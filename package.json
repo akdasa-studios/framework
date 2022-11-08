@@ -6,6 +6,19 @@
   "directories": {
     "lib": "lib"
   },
+  "files": [
+    "/dist"
+  ],
+  "exports": {
+    "./*": {
+      "types": "./dist/*/index.d.ts",
+      "require": "./dist/*/index.js",
+      "import": "./dist/*/index.js"
+    }
+  },
+  "typesVersions": {
+    ">=3.2": { "*": ["./dist/*/index.d.ts"] }
+  },
   "scripts": {
     "test": "jest",
     "mtest": "stryker run",
