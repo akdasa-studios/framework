@@ -1,3 +1,12 @@
+```mermaid
+flowchart LR
+    Entity-->|has|Identity
+    Entity-->|encapsulates|ValueObject
+    Aggregate-->|access with|Repository
+    Aggregate-->|encapsulates|Entity
+    Aggregate-->|encapsulates|ValueObject
+```
+
 # Identity
 Each _Entity_ has its _Identity_. If the identities are equal, then the objects are equal.
 
