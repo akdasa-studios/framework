@@ -1,4 +1,7 @@
-export abstract class Value<TValueType> {
+import { IEqualable } from './interfaces'
+
+
+export abstract class Value<TValueType> implements IEqualable<Value<TValueType>> {
   /**
    * Equality check of two values
    * @param value Value to compare to

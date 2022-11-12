@@ -1,11 +1,16 @@
 import { Identity } from './identity'
+import { IEqualable, IIdentifiable } from './interfaces'
+
 
 /**
  * Base class for all entities.
  */
 export abstract class Entity<
   TIdentity extends Identity<unknown, unknown>
-> {
+> implements
+  IIdentifiable<TIdentity>,
+  IEqualable<Entity<TIdentity>>
+{
   private _identity: TIdentity
 
   /**
