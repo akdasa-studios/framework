@@ -1,7 +1,5 @@
 name: bump
 on:
-  pull_request:
-    types: [opened]
   issue_comment:
     types: [created]
 
