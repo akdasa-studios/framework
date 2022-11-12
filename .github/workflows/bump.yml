@@ -5,6 +5,7 @@ on:
 
 jobs:
   bump-version:
+    if: contains(github.event.comment.body, 'bump version')
     name: 'Bump Version on master'
     runs-on: ubuntu-latest
 
