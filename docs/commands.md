@@ -35,8 +35,7 @@ Command is an object that represents a single action. It is used to encapsulate 
 
 `IComannd` is a generic interface that takes two parameters: `TContext` and `TResult`. `TContext` is a type of context that will be used to execute the command. `TResult` is a type of result that will be returned after command execution.
 
-`ICommand` has two methods: `execute` and `revert`. `execute` method is used to execute the command. `revert` method is used to revert the command. `revert` method is optional. If you don't need to revert the command, you can omit it.
-
+`ICommand` has two methods: `execute` and `revert`. You should not execute the command directly. You should use `Processor` to execute the command.
 
 ```ts
 import { ICommand } from '@akdasa-studios/framework/commands'
