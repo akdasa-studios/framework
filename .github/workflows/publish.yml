@@ -10,8 +10,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
       - name: 'cat package.json'
         run: cat ./package.json
       - name: 'Automated Version Bump'
