@@ -1,6 +1,6 @@
 {
   "name": "@akdasa-studios/framework",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Framework to build every app",
   "main": "index.js",
   "directories": {
