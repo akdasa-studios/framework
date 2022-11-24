@@ -1,7 +1,10 @@
 {
   "name": "@akdasa-studios/framework",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Framework to build every app",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "typings": "./dist/cjs/index.d.js",
   "directories": {
     "lib": "lib"
   },
@@ -22,7 +25,6 @@
       ]
     }
   },
-
   "scripts": {
     "test": "jest",
     "mtest": "stryker run",
