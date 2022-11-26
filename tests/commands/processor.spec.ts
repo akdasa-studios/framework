@@ -1,13 +1,17 @@
+import { Result } from '@lib/core'
 import { Processor, ICommand } from '@lib/commands'
-
 
 class CalculatorContext {
   public value = 0
 }
 
-class AddCommand implements ICommand<CalculatorContext, number> {
-  execute(context: CalculatorContext): number { return ++context.value }
-  revert(context: CalculatorContext): number { return context.value-- }
+class AddCommand implements ICommand<CalculatorContext, Result<number, string>> {
+  execute(context: CalculatorContext): Result<number, string> {
+    return Result.ok(++context.value)
+  }
+  revert(context: CalculatorContext): Result<number, string> {
+    return Result.ok(context.value--)
+  }
 }
 
 
@@ -32,7 +36,8 @@ describe('Processor', () => {
 
     it('returns value of execution', () => {
       const result = processor.execute(new AddCommand())
-      expect(result).toBe(1)
+      expect(result.isSuccess).toBeTruthy()
+      expect(result.value).toBe(1)
     })
 
     it('throws error if command is already executed', () => {

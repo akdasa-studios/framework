@@ -1,7 +1,12 @@
+import { AnyResult } from '@lib/core'
+
 /**
  * Command is the base class for all commands.
  */
-export interface ICommand<TContext, TResult> {
+export interface ICommand<
+  TContext,
+  TResult extends AnyResult
+> {
   /**
    * Executes the command.
    * @param context The context in which the command is executed.
@@ -14,4 +19,4 @@ export interface ICommand<TContext, TResult> {
 /**
  * Any command that can be executed.
  */
-export type AnyCommand = ICommand<unknown, unknown>
+export type AnyCommand = ICommand<unknown, AnyResult>

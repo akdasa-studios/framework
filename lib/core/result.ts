@@ -1,11 +1,16 @@
 
 /**
+ * Any result
+ */
+export type AnyResult = Result<unknown, unknown>
+
+/**
  * Result is a discriminated union type that represents either a success or a failure.
  */
 export class Result<
   TSuccess = void,
   TFail = string
-> {
+> implements Result<TSuccess, TFail> {
   private readonly _success: boolean;
   private readonly _payload: TSuccess | TFail | undefined
 

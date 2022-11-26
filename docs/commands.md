@@ -2,6 +2,7 @@
 flowchart LR
     Processor-->|executes|Command
     Command-->|modifies|Context
+    Command-->|returns|Result
 ```
 
 # Commands
@@ -39,11 +40,14 @@ Command is an object that represents a single action. It is used to encapsulate 
 
 ```ts
 import { ICommand } from '@akdasa-studios/framework/commands'
+import { Result } from '@akdasa-studios/framework/core'
 
-class AddCommand implements ICommand<CalculatorContext, number>  {
+
+class AddCommand implements ICommand<CalculatorContext, Result<void, string>>  {
   constructor(private value: number) {}
   public execute(context: CalculatorContext) {
-    context.set(context.value + this.value);
+    context.set(context.value + this.value)
+    return Result.ok()
   }
   public revert(context: CalculatorContext) {
     context.set(context.value - this.value);
