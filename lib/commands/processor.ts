@@ -1,5 +1,5 @@
+import { AnyResult } from '@lib/core'
 import { ICommand, AnyCommand } from './command'
-
 
 export class Processor {
   private stack: AnyCommand[] = []
@@ -15,7 +15,7 @@ export class Processor {
    * @param command Command to process.
    * @returns {TResult} Returns the result of the command.
    */
-  execute<TContext, TResult>(command: ICommand<TContext, TResult>): TResult {
+  execute<TContext, TResult extends AnyResult>(command: ICommand<TContext, TResult>): TResult {
     if (this.stack.includes(command)) {
       throw new Error('Command is already executed.')
     }
