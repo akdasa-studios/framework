@@ -11,7 +11,7 @@ export class Result<
   TSuccess = void,
   TFail = string
 > implements Result<TSuccess, TFail> {
-  private readonly _success: boolean;
+  private readonly _success: boolean
   private readonly _payload: TSuccess | TFail | undefined
 
   /**

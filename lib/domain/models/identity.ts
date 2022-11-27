@@ -39,6 +39,7 @@ export class Identity<
   private __type__: TIdentityType
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyIdentity = Identity<any, unknown>
 
 /**

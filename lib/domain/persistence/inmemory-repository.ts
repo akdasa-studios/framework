@@ -49,6 +49,7 @@ class InMemoryQueryProcessor<
   }
 
   private processPrdicate(predicate: Predicate<TEntity>, entities: TEntity[]) : readonly TEntity[] {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     type a = {[ky: string]: (a: any, b: any) => boolean}
     const ops: a = {
       [Operators.Equal]: (a, b) => a === b,
@@ -56,7 +57,7 @@ class InMemoryQueryProcessor<
       [Operators.GreaterThanOrEqual]: (a, b) => a >= b,
       [Operators.LessThan]: (a, b) => a < b,
       [Operators.LessThanOrEqual]: (a, b) => a <= b,
-      [Operators.In]: (a, b) => b.includes(a),
+      // [Operators.In]: (a, b) => b.includes(a),
     }
     const op = ops[predicate.operator]
     return entities.filter(x => op(this.getFieldValue(predicate.field, x), predicate.value))

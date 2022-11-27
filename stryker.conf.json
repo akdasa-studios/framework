@@ -12,6 +12,10 @@
   "checkers": [
     "typescript"
   ],
+  "ignorePatterns": [
+    "coverage/*",
+    "dist/*"
+  ],
   "tsconfigFile": "tsconfig.json",
   "thresholds": {
     "high": 80,
