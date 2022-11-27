@@ -39,7 +39,8 @@ export class Identity<
   private __type__: TIdentityType
 }
 
-export type AnyIdentity = Identity<never, unknown>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyIdentity = Identity<any, unknown>
 
 /**
  * UUID Identitiy
