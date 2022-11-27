@@ -1,6 +1,7 @@
 {
   "name": "@akdasa-studios/framework",
   "version": "0.0.8",
+  "version": "0.0.7",
   "description": "Framework to build every app",
   "main": "dist/index.js",
   "typings": "dist/index.d.js",
