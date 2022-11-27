@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
+    // "strict": true,
     "moduleResolution": "node",
-    "target": "ES2018",
+    "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
     "outDir": "./dist",
