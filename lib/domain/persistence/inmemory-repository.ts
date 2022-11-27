@@ -57,7 +57,7 @@ class InMemoryQueryProcessor<
       [Operators.GreaterThanOrEqual]: (a, b) => a >= b,
       [Operators.LessThan]: (a, b) => a < b,
       [Operators.LessThanOrEqual]: (a, b) => a <= b,
-      [Operators.In]: (a, b) => b.includes(a),
+      // [Operators.In]: (a, b) => b.includes(a),
     }
     const op = ops[predicate.operator]
     return entities.filter(x => op(this.getFieldValue(predicate.field, x), predicate.value))
