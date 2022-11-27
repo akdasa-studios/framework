@@ -1,36 +1,36 @@
 {
   "name": "@akdasa-studios/framework",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Framework to build every app",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "typings": "./dist/cjs/index.d.js",
+  "main": "dist.cjs/index.js",
+  "module": "dist.esm/index.js",
+  "typings": "dist.cjs/index.d.js",
   "directories": {
     "lib": "lib"
   },
   "files": [
-    "./dist"
+    "./dist.cjs",
+    "./dist.esm"
   ],
   "exports": {
     "./*": {
-      "types": "./dist/cjs/*/index.d.ts",
-      "require": "./dist/cjs/*/index.js",
-      "import": "./dist/esm/*/index.js"
+      "types": "./dist.cjs/*/index.d.ts",
+      "require": "./dist.cjs/*/index.js",
+      "import": "./dist.esm/*/index.js"
     }
   },
   "typesVersions": {
     ">=3.2": {
       "*": [
-        "./dist/cjs/index.d.ts"
+        "./dist.cjs/index.d.ts"
       ]
     }
   },
-
   "scripts": {
     "test": "jest",
     "mtest": "stryker run",
     "lint": "eslint . --ext .ts",
-    "build": "rm -rf dist/* && tsc --module commonjs --outdir dist/cjs && tsc --module es6 --outdir dist/esm && resolve-tspaths"
+    "build": "sh build.sh"
   },
   "repository": {
     "type": "git",
