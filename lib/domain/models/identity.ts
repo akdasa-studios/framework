@@ -39,7 +39,7 @@ export class Identity<
   private __type__: TIdentityType
 }
 
-export type AnyIdentity = Identity<any, unknown>
+export type AnyIdentity = Identity<never, unknown>
 
 /**
  * UUID Identitiy

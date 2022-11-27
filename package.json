@@ -27,7 +27,7 @@
   "scripts": {
     "test": "jest",
     "mtest": "stryker run",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint ./lib --ext .ts",
     "build": "tsc && resolve-tspaths"
   },
   "repository": {

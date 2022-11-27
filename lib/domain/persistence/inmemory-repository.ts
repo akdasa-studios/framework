@@ -49,6 +49,7 @@ class InMemoryQueryProcessor<
   }
 
   private processPrdicate(predicate: Predicate<TEntity>, entities: TEntity[]) : readonly TEntity[] {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     type a = {[ky: string]: (a: any, b: any) => boolean}
     const ops: a = {
       [Operators.Equal]: (a, b) => a === b,
