@@ -1,23 +1,24 @@
 {
   "name": "@akdasa-studios/framework",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Framework to build every app",
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "typings": "types/index.d.ts",
   "files": [
-    "./dist/**"
+    "./dist/**",
+    "./types/**"
   ],
   "exports": {
     "./*": {
-      "types": "./dist/index.d.ts",
+      "types": "./types/index.d.ts",
       "require": "./dist/index.js"
     }
   },
   "typesVersions": {
     ">=3.2": {
       "*": [
-        "./dist/index.d.ts"
+        "./types/*"
       ]
     }
   },
@@ -25,7 +26,7 @@
     "test": "jest",
     "mtest": "stryker run",
     "lint": "eslint ./lib --ext .ts",
-    "build": "webpack && tsc --emitDeclarationOnly --declaration --out ./dist/index.d.ts"
+    "build": "webpack && tsc --emitDeclarationOnly --declaration --outDir ./types"
   },
   "repository": {
     "type": "git",
@@ -38,7 +39,6 @@
   },
   "homepage": "https://github.com/akdasa-studios/framework#readme",
   "dependencies": {
-    "declaration-bundler-webpack-plugin": "^1.0.3",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

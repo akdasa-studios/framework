@@ -3,5 +3,4 @@ node_modules/
 coverage/
 reports/
 dist
-dist.cjs
-dist.esm
+types
