@@ -1,6 +1,6 @@
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
-import { IRepository, Predicate, Query, Expression, Binding } from '@lib/domain/persistence'
-import { Operators, LogicalOperators } from '@lib/domain/persistence'
+import { IRepository } from './repository'
+import { Predicate, Query, Expression, Binding, Operators, LogicalOperators } from './query'
 
 
 export abstract class InMemoryRepository<

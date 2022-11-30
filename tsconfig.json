@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "ES2015",
+    "target": "ES6",
     // "strict": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "declaration": true,
+    // "declaration": true,
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./lib",
@@ -28,6 +28,7 @@
     }
   },
   "include": [
-    "lib/*"
+    "lib/**/*.ts",
+    "lib/**/*.d.ts"
   ]
 }
