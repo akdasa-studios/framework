@@ -1,27 +1,13 @@
 {
   "name": "@akdasa-studios/framework",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Framework to build every app",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "typings": "types/index.d.ts",
   "files": [
-    "./dist/**",
-    "./types/**"
+    "./lib/**"
   ],
-  "exports": {
-    "./*": {
-      "types": "./types/index.d.ts",
-      "require": "./dist/index.js"
-    }
-  },
-  "typesVersions": {
-    ">=3.2": {
-      "*": [
-        "./types/*"
-      ]
-    }
-  },
   "scripts": {
     "test": "jest",
     "mtest": "stryker run",
