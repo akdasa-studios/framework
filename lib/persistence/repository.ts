@@ -1,5 +1,5 @@
 import { AnyIdentity, Aggregate } from '@lib/domain/models'
-import { Query } from '@lib/domain/persistence'
+import { Query } from '@lib/persistence'
 
 
 /**
