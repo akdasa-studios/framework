@@ -8,7 +8,11 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: '[name].js'
+    filename: '[name].js',
+    library: {
+      name: 'Framework',
+      type: 'commonjs',
+    },
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
