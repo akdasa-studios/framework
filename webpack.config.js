@@ -24,12 +24,12 @@ module.exports = {
       }
     ]
   },
-  // externals: {
-  //   uuid: {
-  //     commonjs: 'uuid',
-  //     commonjs2: 'uuid',
-  //     amd: 'uuid',
-  //     root: 'uuid',
-  //   },
-  // },
+  externals: {
+    uuid: {
+      commonjs: 'uuid',
+      commonjs2: 'uuid',
+      amd: 'uuid',
+      root: 'uuid',
+    },
+  },
 }
