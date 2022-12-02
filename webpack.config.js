@@ -11,7 +11,7 @@ module.exports = {
     filename: '[name].js',
     library: {
       // name: 'Framework',
-      type: 'module',
+      type: 'umd',
     },
   },
   resolve: {
