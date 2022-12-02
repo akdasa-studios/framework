@@ -4,7 +4,7 @@
     "target": "ES6",
     // "strict": true,
     "moduleResolution": "node",
-    "importHelpers": true,
+    "importHelpers": false,
     // "declaration": true,
     "sourceMap": true,
     "outDir": "./dist",

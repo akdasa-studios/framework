@@ -10,7 +10,6 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     filename: '[name].js',
     library: {
-      name: 'Framework',
       type: 'commonjs',
     },
   },
@@ -24,5 +23,13 @@ module.exports = {
         loader: 'ts-loader'
       }
     ]
-  }
+  },
+  // externals: {
+  //   uuid: {
+  //     commonjs: 'uuid',
+  //     commonjs2: 'uuid',
+  //     amd: 'uuid',
+  //     root: 'uuid',
+  //   },
+  // },
 }
