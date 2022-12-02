@@ -1,5 +1,5 @@
 import { Operators, QueryBuilder } from '@lib/persistence/query'
-import { Order } from '../env'
+import { Order } from '../domain/env'
 
 
 describe('QueryBuilder', () => {

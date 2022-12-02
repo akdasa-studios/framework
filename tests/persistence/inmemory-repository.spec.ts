@@ -1,6 +1,6 @@
 import { InMemoryRepository } from '@lib/persistence'
 import { Expression, LogicalOperators, QueryBuilder } from '@lib/persistence/query'
-import { Order, OrderId } from '../env'
+import { Order, OrderId } from '../domain/env'
 
 
 class FakeInMemoryRepository
