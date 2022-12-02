@@ -10,8 +10,8 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     filename: '[name].js',
     library: {
-      name: 'Framework',
-      type: 'commonjs',
+      // name: 'Framework',
+      type: 'module',
     },
   },
   resolve: {
@@ -24,5 +24,8 @@ module.exports = {
         loader: 'ts-loader'
       }
     ]
+  },
+  experiments: {
+    outputModule: true,
   }
 }
