@@ -1,7 +1,7 @@
-import { IEqualable } from './interfaces'
+// import { IEqualable } from './interfaces'
 
-
-export abstract class Value<TValueType> implements IEqualable<Value<TValueType>> {
+export class Value<TValueType> {
+  // implements IEqualable<Value<TValueType>> {
   /**
    * Equality check of two values
    * @param value Value to compare to
@@ -18,7 +18,7 @@ export abstract class Value<TValueType> implements IEqualable<Value<TValueType>>
   }
 
   /**
-   * Identity brand
+   * Value type
    */
   private __type__: TValueType
 }
