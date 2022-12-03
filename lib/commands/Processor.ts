@@ -1,5 +1,5 @@
 import { AnyResult } from '@lib/core'
-import { Command, AnyCommand } from './command'
+import { Command, AnyCommand } from './Command'
 
 export class Processor {
   private stack: AnyCommand[] = []

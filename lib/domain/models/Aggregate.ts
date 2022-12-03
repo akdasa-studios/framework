@@ -1,5 +1,5 @@
-import { Entity } from './entity'
-import { Identity } from './identity'
+import { Entity } from './Entity'
+import { Identity } from './Identity'
 
 
 /**

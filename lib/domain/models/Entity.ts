@@ -1,5 +1,5 @@
-import { Identity } from './identity'
-import { Equalable, Identifiable } from './interfaces'
+import { Identity } from './Identity'
+import { Equalable, Identifiable } from './Interfaces'
 
 
 /**

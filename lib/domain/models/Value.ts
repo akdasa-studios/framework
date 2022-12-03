@@ -1,4 +1,4 @@
-import { Equalable } from './interfaces'
+import { Equalable } from './Interfaces'
 
 export class Value<TValueType> implements Equalable<Value<TValueType>> {
   /**

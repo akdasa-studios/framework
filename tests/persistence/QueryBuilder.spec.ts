@@ -1,4 +1,4 @@
-import { Operators, QueryBuilder } from '@lib/persistence/query'
+import { Operators, QueryBuilder } from '@lib/persistence'
 import { Order } from '../domain/env'
 
 

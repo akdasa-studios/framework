@@ -1,2 +1,2 @@
-export * from './command'
-export * from './processor'
+export * from './Command'
+export * from './Processor'
