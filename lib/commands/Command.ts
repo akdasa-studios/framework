@@ -1,9 +1,10 @@
 import { AnyResult } from '@lib/core'
 
+
 /**
  * Command is the base class for all commands.
  */
-export interface ICommand<
+export interface Command<
   TContext,
   TResult extends AnyResult
 > {
@@ -13,10 +14,15 @@ export interface ICommand<
    * @returns The result of the command.
    */
   execute(context: TContext): TResult
-  revert(context: TContext): void
+
+  /**
+   * Reverts the command.
+   * @param context The context in which the command is reverted.
+   */
+  revert(context: TContext)
 }
 
 /**
  * Any command that can be executed.
  */
-export type AnyCommand = ICommand<unknown, AnyResult>
+export type AnyCommand = Command<unknown, AnyResult>

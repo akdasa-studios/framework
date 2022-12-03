@@ -1,11 +1,11 @@
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
-import { IRepository } from './repository'
-import { Predicate, Query, Expression, Binding, Operators, LogicalOperators } from './query'
+import { Repository } from './Repository'
+import { Predicate, Query, Expression, Binding, Operators, LogicalOperators } from './Query'
 
 
 export abstract class InMemoryRepository<
   TEntity extends Aggregate<AnyIdentity>
-> implements IRepository<TEntity> {
+> implements Repository<TEntity> {
   protected entities = new Map<TEntity['id'], TEntity>()
   protected processor = new InMemoryQueryProcessor<TEntity>()
 

@@ -1,6 +1,5 @@
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
 
-
 /**
  * Comparison operators. These are used to compare a field with a value.
  */

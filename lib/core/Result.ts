@@ -9,10 +9,10 @@ export type AnyResult = Result<unknown, unknown>
  */
 export class Result<
   TSuccess = void,
-  TFail = string
-> implements Result<TSuccess, TFail> {
+  TFailure = string
+> implements Result<TSuccess, TFailure> {
   private readonly _success: boolean
-  private readonly _payload: TSuccess | TFail | undefined
+  private readonly _payload: TSuccess | TFailure | undefined
 
   /**
    * Initializes a new instance of the Result class.
@@ -21,7 +21,7 @@ export class Result<
    */
   private constructor(
     success: boolean,
-    payload: TSuccess | TFail | undefined,
+    payload: TSuccess | TFailure | undefined,
   ) {
     this._success = success
     this._payload = payload
@@ -43,10 +43,10 @@ export class Result<
    * @param payload The payload of the result.
    * @returns A new instance of the Result class.
    */
-  public static fail<TSuccessPayload, TFailPayload>(
-    payload?: TFailPayload
-  ): Result<TSuccessPayload, TFailPayload> {
-    return new Result<TSuccessPayload, TFailPayload>(false, payload)
+  public static fail<TSuccessPayload, TFailurePayload>(
+    payload?: TFailurePayload
+  ): Result<TSuccessPayload, TFailurePayload> {
+    return new Result<TSuccessPayload, TFailurePayload>(false, payload)
   }
 
   /**
@@ -77,7 +77,11 @@ export class Result<
    * Gets the payload of the result.
    * @returns The payload of the result.
    */
-  get error(): TFail {
-    return this._payload as TFail
+  get error(): TFailure {
+    return this._payload as TFailure
   }
 }
+
+export const Ok = Result.ok
+export const Fail = Result.fail
+export const NoResult: Result<void, void> = Result.ok<void, void>(undefined)

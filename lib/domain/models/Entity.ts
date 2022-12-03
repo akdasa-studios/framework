@@ -1,5 +1,5 @@
-import { Identity } from './identity'
-import { IEqualable, IIdentifiable } from './interfaces'
+import { Identity } from './Identity'
+import { Equalable, Identifiable } from './Interfaces'
 
 
 /**
@@ -8,8 +8,8 @@ import { IEqualable, IIdentifiable } from './interfaces'
 export abstract class Entity<
   TIdentity extends Identity<unknown, unknown>
 > implements
-  IIdentifiable<TIdentity>,
-  IEqualable<Entity<TIdentity>>
+  Identifiable<TIdentity>,
+  Equalable<Entity<TIdentity>>
 {
   private _identity: TIdentity
 

@@ -1,5 +1,5 @@
 import { InMemoryRepository } from '@lib/persistence'
-import { Expression, LogicalOperators, QueryBuilder } from '@lib/persistence/query'
+import { Expression, LogicalOperators, QueryBuilder } from '@lib/persistence'
 import { Order, OrderId } from '../domain/env'
 
 
