@@ -83,10 +83,11 @@ describe('Processor', () => {
       expect(result.isCommandExecuted).toBeTruthy()
     })
 
-    it('returns failure if no command is reverted', () => {
+    it('returns failure if no command to revert', () => {
       processor.revert()
       const result = processor.revert()
       expect(result.isCommandExecuted).toBeFalsy()
+      expect(result.processorResult.value).toEqual('No command to revert.')
     })
   })
 })

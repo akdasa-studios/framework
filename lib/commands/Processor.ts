@@ -70,7 +70,7 @@ export class Processor<TContext> {
   revert<TResult extends AnyResult>(): ProcessorResult<TResult> {
     const command = this.stack.pop()
     if (!command) {
-      return new ProcessorResult(Fail('Command is already executed.'))
+      return new ProcessorResult(Fail('No command to revert.'))
     }
 
     const commandResult = command.revert(this.context)
