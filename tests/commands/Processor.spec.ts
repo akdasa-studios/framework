@@ -59,6 +59,7 @@ describe('Processor', () => {
     it('returns failure if command is already executed', () => {
       processor.execute(command)
       expect(processor.execute(command).isCommandExecuted).toBeFalsy()
+      expect(processor.execute(command).processorResult.value).toEqual('Command is already executed.')
       expect(processor.execute(command).value).toBeUndefined()
     })
   })
