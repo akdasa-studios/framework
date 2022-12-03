@@ -1,5 +1,6 @@
 import { AnyResult } from '@lib/core'
 
+
 /**
  * Command is the base class for all commands.
  */
@@ -13,7 +14,12 @@ export interface Command<
    * @returns The result of the command.
    */
   execute(context: TContext): TResult
-  revert(context: TContext): void
+
+  /**
+   * Reverts the command.
+   * @param context The context in which the command is reverted.
+   */
+  revert(context: TContext)
 }
 
 /**

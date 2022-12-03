@@ -34,16 +34,14 @@ class CalculatorContext {
 ## Command
 Command is an object that represents a single action. It is used to encapsulate the data needed to perform an action.
 
-`IComannd` is a generic interface that takes two parameters: `TContext` and `TResult`. `TContext` is a type of context that will be used to execute the command. `TResult` is a type of result that will be returned after command execution.
+`Comannd` is a generic interface that takes two parameters: `TContext` and `TResult`. `TContext` is a type of context that will be used to execute the command. `TResult` is a type of result that will be returned after command execution.
 
-`ICommand` has two methods: `execute` and `revert`. You should not execute the command directly. You should use `Processor` to execute the command.
+`Command` has two methods: `execute` and `revert`. You should not execute the command directly. You should use `Processor` to execute the command.
 
 ```ts
-import { ICommand } from '@akdasa-studios/framework/commands'
-import { Result } from '@akdasa-studios/framework/core'
+import { Command, Result } from '@akdasa-studios/framework'
 
-
-class AddCommand implements ICommand<CalculatorContext, Result<void, string>>  {
+class AddCommand implements Command<CalculatorContext, Result<void, string>>  {
   constructor(private value: number) {}
   public execute(context: CalculatorContext) {
     context.set(context.value + this.value)
@@ -56,12 +54,12 @@ class AddCommand implements ICommand<CalculatorContext, Result<void, string>>  {
 ```
 
 ## Processor
-`Processor` is an object that executes commands. `Processor` has a method `execute` that takes a command and executes it. It raises an error if command was executed before. So you cannot execute the same command twice. You have to create a new command instance.
+`Processor` is an object that executes commands. `Processor` has a method `execute` that takes a command and executes it. It returns failure result  if command was executed before. So you cannot execute the same command twice. You have to create a new command instance.
 
-`Processor` has a method `revert` that reverts last executed command. It raises an error if there is no command to revert.
+`Processor` has a method `revert` that reverts last executed command. It returns failre result if there is no command to revert.
 
 ```ts
-import { Processor } from '@akdasa-studios/framework/commands'
+import { Processor } from '@akdasa-studios/framework'
 
 const state = new ApplicationState()
 const context = new CalculatorContext(state)
