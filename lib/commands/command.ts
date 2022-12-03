@@ -3,7 +3,7 @@ import { AnyResult } from '@lib/core'
 /**
  * Command is the base class for all commands.
  */
-export interface ICommand<
+export interface Command<
   TContext,
   TResult extends AnyResult
 > {
@@ -19,4 +19,4 @@ export interface ICommand<
 /**
  * Any command that can be executed.
  */
-export type AnyCommand = ICommand<unknown, AnyResult>
+export type AnyCommand = Command<unknown, AnyResult>

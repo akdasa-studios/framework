@@ -1,2 +1,2 @@
-export { ICommand } from './command'
-export { Processor } from './processor'
+export * from './command'
+export * from './processor'

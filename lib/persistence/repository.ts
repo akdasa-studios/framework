@@ -5,7 +5,7 @@ import { Query } from '@lib/persistence'
 /**
  * Interface for a repository.
  */
-export interface IRepository<
+export interface Repository<
   TEntity extends Aggregate<AnyIdentity>
 > {
   /**

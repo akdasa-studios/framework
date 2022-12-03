@@ -1,7 +1,6 @@
-// import { IEqualable } from './interfaces'
+import { Equalable } from './interfaces'
 
-export class Value<TValueType> {
-  // implements IEqualable<Value<TValueType>> {
+export class Value<TValueType> implements Equalable<Value<TValueType>> {
   /**
    * Equality check of two values
    * @param value Value to compare to

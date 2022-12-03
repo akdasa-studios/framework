@@ -1,11 +1,11 @@
 import { Result } from '@lib/core'
-import { Processor, ICommand } from '@lib/commands'
+import { Processor, Command } from '@lib/commands'
 
 class CalculatorContext {
   public value = 0
 }
 
-class AddCommand implements ICommand<CalculatorContext, Result<number, string>> {
+class AddCommand implements Command<CalculatorContext, Result<number, string>> {
   execute(context: CalculatorContext): Result<number, string> {
     return Result.ok(++context.value)
   }

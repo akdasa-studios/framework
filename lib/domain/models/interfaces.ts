@@ -2,17 +2,17 @@ import { Identity } from './identity'
 
 
 /**
- * IIdentifiable is an interface for all objects that have an identity.
+ * Identifiable is an interface for all objects that have an identity.
  */
-export interface IIdentifiable<
+export interface Identifiable<
   TIdentity extends Identity<unknown, unknown>
 > {
   get id(): TIdentity
 }
 
 /**
- * IEqualable is an interface for all objects that can be compared for equality.
+ * Equalable is an interface for all objects that can be compared for equality.
  */
-export interface IEqualable<T> {
+export interface Equalable<T> {
   equals(other: T): boolean
 }
