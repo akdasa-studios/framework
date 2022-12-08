@@ -1,4 +1,4 @@
-import { Aggregate, Entity, Identity } from '@lib/domain/models'
+import { Aggregate, Entity, Identity, Value } from '@lib/domain/models'
 
 
 export class OrderId extends Identity<string, 'Order'> {}
@@ -13,13 +13,23 @@ export class OrderLine
   ) { super(id) }
 }
 
+export class Address
+  extends Value<'Address'> {
+  constructor(
+    public street: string,
+    public city: string,
+    public zip: string,
+  ) { super() }
+}
+
 export class Order
   extends Aggregate<OrderId>
 {
   constructor(
     id: OrderId,
-    public firstName: string='John',
-    public lastName: string='Doe',
-    public age: number=33,
+    public firstName: string,
+    public lastName: string,
+    public deliveryAddress: Address,
+    public price: number,
   ) { super(id) }
 }

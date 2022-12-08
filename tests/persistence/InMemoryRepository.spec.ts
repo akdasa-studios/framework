@@ -1,6 +1,6 @@
 import { InMemoryRepository } from '@lib/persistence'
 import { Expression, LogicalOperators, QueryBuilder } from '@lib/persistence'
-import { Order, OrderId } from '../domain/env'
+import { Address, Order, OrderId } from '../domain/env'
 
 
 class FakeInMemoryRepository
@@ -14,8 +14,17 @@ describe('InMemoryRepository', () => {
   const q = new QueryBuilder<Order>()
 
   beforeEach(() => {
-    johnDoe = new Order(new OrderId('123'), 'John', 'Doe', 33)
-    alexSmith = new Order(new OrderId('1234'), 'Alex', 'Smith', 50)
+    johnDoe = new Order(
+      new OrderId('123'), 'John', 'Doe',
+      new Address('2nd Avenue', 'New York', 'Zip'),
+      100
+    )
+    alexSmith = new Order(
+      new OrderId('1234'),
+      'Alex', 'Smith',
+      new Address('Liberation Bulevard', 'Belgrade', 'Zip'),
+      200
+    )
     repository = new FakeInMemoryRepository()
     repository.save(johnDoe)
     repository.save(alexSmith)
@@ -113,6 +122,24 @@ describe('InMemoryRepository', () => {
       expect(() => repository.find(query)).toThrowError('Invalid operator \'wrong\'')
     })
 
+    describe('Value comparison', () => {
+      it('should return object if values are equal', () => {
+        const query = q.and(
+          q.eq('deliveryAddress', new Address('2nd Avenue', 'New York', 'Zip')),
+        )
+        const result = repository.find(query)
+        expect(result).toEqual([johnDoe])
+      })
+
+      it('should not return object if values are equal', () => {
+        const query = q.and(
+          q.eq('deliveryAddress', new Address('56nd Avenue', 'London', 'Zip')),
+        )
+        const result = repository.find(query)
+        expect(result).toEqual([])
+      })
+    })
+
     describe('complex query', () => {
       it('not', () => {
         const query = q.not(
@@ -134,7 +161,7 @@ describe('InMemoryRepository', () => {
       it('and', () => {
         const query = q.and(
           q.eq('firstName', 'John'),
-          q.eq('age', 33),
+          q.eq('price', 100),
         )
         const result = repository.find(query)
         expect(result).toEqual([johnDoe])
@@ -143,32 +170,32 @@ describe('InMemoryRepository', () => {
       it('and 2', () => {
         const query = q.and(
           q.eq('firstName', 'John'),
-          q.eq('age', 55),
+          q.eq('price', 500),
         )
         const result = repository.find(query)
         expect(result).toEqual([])
       })
 
       it('gte', () => {
-        const query = q.gte('age', 50)
+        const query = q.gte('price', 200)
         const result = repository.find(query)
         expect(result).toEqual([alexSmith])
       })
 
       it('lte', () => {
-        const query = q.lte('age', 33)
+        const query = q.lte('price', 100)
         const result = repository.find(query)
         expect(result).toEqual([johnDoe])
       })
 
       it('gt', () => {
-        const query = q.gt('age', 33)
+        const query = q.gt('price', 100)
         const result = repository.find(query)
         expect(result).toEqual([alexSmith])
       })
 
       it('lt', () => {
-        const query = q.lt('age', 50)
+        const query = q.lt('price', 200)
         const result = repository.find(query)
         expect(result).toEqual([johnDoe])
       })

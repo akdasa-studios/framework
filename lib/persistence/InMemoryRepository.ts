@@ -1,4 +1,4 @@
-import { Aggregate, AnyIdentity } from '@lib/domain/models'
+import { Aggregate, AnyIdentity, Value } from '@lib/domain/models'
 import { Repository } from './Repository'
 import { Predicate, Query, Expression, Binding, Operators, LogicalOperators } from './Query'
 
@@ -52,7 +52,33 @@ class InMemoryQueryProcessor<
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     type a = {[ky: string]: (a: any, b: any) => boolean}
     const ops: a = {
-      [Operators.Equal]: (a, b) => a === b,
+      [Operators.Equal]: (a, b) => {
+        // if (a instanceof Date && b instanceof Date) {
+        //   return a.getTime() === b.getTime()
+        // }
+        // if (a instanceof Array && b instanceof Array) {
+        //   return a.every((x, i) => x === b[i])
+        // }
+        // if (a instanceof Object && b instanceof Object) {
+        //   return Object.keys(a).every(k => a[k] === b[k])
+        // }
+        // if (a instanceof Map && b instanceof Map) {
+        //   return Array.from(a.keys()).every(k => a.get(k) === b.get(k))
+        // }
+        // if (a instanceof Set && b instanceof Set) {
+        //   return Array.from(a).every(x => b.has(x))
+        // }
+        // if (a instanceof String && b instanceof String) {
+        //   return a.valueOf() === b.valueOf()
+        // }
+        // if (a instanceof Number && b instanceof Number) {
+        //   return a.valueOf() === b.valueOf()
+        // }
+        if (a instanceof Value && b instanceof Value) {
+          return a.equals(b)
+        }
+        return a === b
+      },
       [Operators.GreaterThan]: (a, b) => a > b,
       [Operators.GreaterThanOrEqual]: (a, b) => a >= b,
       [Operators.LessThan]: (a, b) => a < b,

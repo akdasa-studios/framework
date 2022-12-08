@@ -43,8 +43,8 @@ describe('QueryBuilder', () => {
     const query = q.and(
       q.eq('firstName', 'John'),
       q.or(
-        q.eq('age', 30),
-        q.eq('age', 40),
+        q.eq('price', 30),
+        q.eq('price', 40),
       ),
     )
 
@@ -60,12 +60,12 @@ describe('QueryBuilder', () => {
           operator: 'or',
           query: [
             {
-              field: 'age',
+              field: 'price',
               operator: Operators.Equal,
               value: 30,
             },
             {
-              field: 'age',
+              field: 'price',
               operator: Operators.Equal,
               value: 40,
             },
