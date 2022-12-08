@@ -7,10 +7,10 @@ describe('QueryBuilder', () => {
   const q = new QueryBuilder<Order>()
 
   it('should create a query', () => {
-    const query = q.eq('firstName', 'John')
+    const query = q.eq('clientName', 'John')
 
     expect(query).toEqual({
-      field: 'firstName',
+      field: 'clientName',
       operator: Operators.Equal,
       value: 'John',
     })
@@ -18,22 +18,22 @@ describe('QueryBuilder', () => {
 
   it('should create a query with multiple predicates', () => {
     const query = q.and(
-      q.eq('firstName', 'John'),
-      q.eq('lastName', 'Doe'),
+      q.eq('clientName', 'John'),
+      q.eq('price', 100),
     )
 
     expect(query).toEqual({
       operator: 'and',
       query: [
         {
-          field: 'firstName',
+          field: 'clientName',
           operator: Operators.Equal,
           value: 'John',
         },
         {
-          field: 'lastName',
+          field: 'price',
           operator: Operators.Equal,
-          value: 'Doe',
+          value: 100,
         },
       ],
     })
@@ -41,10 +41,10 @@ describe('QueryBuilder', () => {
 
   it('should create a query with nested queries', () => {
     const query = q.and(
-      q.eq('firstName', 'John'),
+      q.eq('clientName', 'John'),
       q.or(
-        q.eq('age', 30),
-        q.eq('age', 40),
+        q.eq('price', 30),
+        q.eq('price', 40),
       ),
     )
 
@@ -52,7 +52,7 @@ describe('QueryBuilder', () => {
       operator: 'and',
       query: [
         {
-          field: 'firstName',
+          field: 'clientName',
           operator: Operators.Equal,
           value: 'John',
         },
@@ -60,12 +60,12 @@ describe('QueryBuilder', () => {
           operator: 'or',
           query: [
             {
-              field: 'age',
+              field: 'price',
               operator: Operators.Equal,
               value: 30,
             },
             {
-              field: 'age',
+              field: 'price',
               operator: Operators.Equal,
               value: 40,
             },
