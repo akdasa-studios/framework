@@ -131,9 +131,17 @@ describe('InMemoryRepository', () => {
         expect(result).toEqual([johnDoe])
       })
 
-      it('should not return object if values are equal', () => {
+      it('should not return object if values are not equal', () => {
         const query = q.and(
           q.eq('deliveryAddress', new Address('56nd Avenue', 'London', 'Zip')),
+        )
+        const result = repository.find(query)
+        expect(result).toEqual([])
+      })
+
+      it('should not return object if values are equal', () => {
+        const query = q.and(
+          q.eq('deliveryAddress', 'somethingStange'),
         )
         const result = repository.find(query)
         expect(result).toEqual([])
