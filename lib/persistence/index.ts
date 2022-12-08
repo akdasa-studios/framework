@@ -1,3 +1,3 @@
 export * from './Query'
 export * from './Repository'
-export * from './InMemoryRepository'
+export * from './memory/InMemoryRepository'

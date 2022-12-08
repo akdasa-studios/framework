@@ -1,13 +1,12 @@
 import { InMemoryRepository } from '@lib/persistence'
-import { Expression, LogicalOperators, QueryBuilder } from '@lib/persistence'
-import { address, Address, clientName, Order, OrderId, price } from '../domain/env'
+import { Expression, LogicalOperators } from '@lib/persistence'
+import { Address, clientName, Order, OrderId } from '../../domain/env'
 
 
 describe('InMemoryRepository', () => {
   let order1: Order
   let order2: Order
   let repository: InMemoryRepository<Order>
-  const q = new QueryBuilder<Order>()
 
   beforeEach(() => {
     order1 = new Order(
@@ -113,84 +112,6 @@ describe('InMemoryRepository', () => {
         'wrong' as LogicalOperators, clientName('John')
       )
       expect(() => repository.find(query)).toThrowError('Invalid operator \'wrong\'')
-    })
-
-    /* ---------------------------- Value Comparison ---------------------------- */
-
-    describe('value comparison', () => {
-      it('should return object if values are equal', () => {
-        const result = repository.find(address('2nd Avenue', 'New York', 'Zip'))
-        expect(result).toEqual([order1])
-      })
-
-      it('should not return object if values are not equal', () => {
-        const result = repository.find(address('2nd Avenue', 'London', 'Zip'))
-        expect(result).toEqual([])
-      })
-
-      it('should not return object if values are of different types', () => {
-        const query = q.eq('deliveryAddress', 'somethingStange')
-        const result = repository.find(query)
-        expect(result).toEqual([])
-      })
-    })
-
-    /* ------------------------------ Complex Query ----------------------------- */
-
-    describe('complex query', () => {
-      it('not', () => {
-        const result = repository.find(q.not(clientName('John')))
-        expect(result).toEqual([order2])
-      })
-
-      it('or', () => {
-        const result = repository.find(q.or(
-          clientName('John'),
-          clientName('Alex'),
-        ))
-        expect(result).toEqual([order1, order2])
-      })
-
-      it('and', () => {
-        const query = q.and(
-          clientName('John'),
-          q.eq('price', 100),
-        )
-        const result = repository.find(query)
-        expect(result).toEqual([order1])
-      })
-
-      it('and 2', () => {
-        const result = repository.find(q.and(
-          clientName('John'),
-          price(500),
-        ))
-        expect(result).toEqual([])
-      })
-
-      it('gte', () => {
-        const query = q.gte('price', 200)
-        const result = repository.find(query)
-        expect(result).toEqual([order2])
-      })
-
-      it('lte', () => {
-        const query = q.lte('price', 100)
-        const result = repository.find(query)
-        expect(result).toEqual([order1])
-      })
-
-      it('gt', () => {
-        const query = q.gt('price', 100)
-        const result = repository.find(query)
-        expect(result).toEqual([order2])
-      })
-
-      it('lt', () => {
-        const query = q.lt('price', 200)
-        const result = repository.find(query)
-        expect(result).toEqual([order1])
-      })
     })
   })
 })

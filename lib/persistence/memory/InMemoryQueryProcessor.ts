@@ -1,56 +1,36 @@
 import { Aggregate, AnyIdentity, Value } from '@lib/domain/models'
-import { Repository } from './Repository'
-import { Predicate, Query, Expression, Binding, Operators, LogicalOperators } from './Query'
+import { Binding, Expression, LogicalOperators, Operators, Predicate, Query } from '../Query'
 
-
-export class InMemoryRepository<
-  TEntity extends Aggregate<AnyIdentity>
-> implements Repository<TEntity> {
-  protected entities = new Map<TEntity['id'], TEntity>()
-  protected processor = new InMemoryQueryProcessor<TEntity>()
-
-  public save(entity: TEntity): void {
-    const copy = Object.create(entity)
-    Object.assign(copy, entity)
-    this.entities.set(entity.id.value, copy)
-  }
-
-  public get(id: TEntity['id']): TEntity {
-    const value = this.entities.get(id.value)
-    if (!value) { throw new Error(`Entity '${id.value}' not found`) }
-    return value
-  }
-
-  public exists(id: TEntity['id']): boolean {
-    return this.entities.has(id.value)
-  }
-
-  public find(query: Query<TEntity>): readonly TEntity[] {
-    const entities = Array.from(this.entities.values())
-    return this.processor.execute(query, entities)
-  }
-
-  public delete(id: TEntity['id']): void {
-    if (!this.exists(id)) {
-      throw new Error(`Entity '${id.value}' not found`)
-    }
-    this.entities.delete(id.value)
-  }
-}
-
-
-class InMemoryQueryProcessor<
+export class InMemoryQueryProcessor<
   TEntity extends Aggregate<AnyIdentity>
 > {
-  public execute(query: Query<TEntity>, entities: TEntity[]): readonly TEntity[] {
+  /**
+   * Executes query against entities
+   * @param query Query to execute
+   * @param entities Entities to execute query against
+   * @returns Entities that match query
+   */
+  public execute(
+    query: Query<TEntity>,
+    entities: TEntity[]
+  ): readonly TEntity[] {
     return query instanceof Predicate
       ? this.processPrdicate(query, entities)
       : this.processExpression(query, entities)
   }
 
-  private processPrdicate(predicate: Predicate<TEntity>, entities: TEntity[]) : readonly TEntity[] {
+  /**
+   * Processes predicate against entities
+   * @param predicate Predicate to process
+   * @param entities Entities to process predicate against
+   * @returns Entities that match predicate
+   */
+  private processPrdicate(
+    predicate: Predicate<TEntity>,
+    entities: TEntity[]
+  ): readonly TEntity[] {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    type a = {[ky: string]: (a: any, b: any) => boolean}
+    type a = { [ky: string]: (a: any, b: any) => boolean; };
     const ops: a = {
       [Operators.Equal]: (a, b) => {
         // if (a instanceof Date && b instanceof Date) {
@@ -78,7 +58,6 @@ class InMemoryQueryProcessor<
         if (a instanceof Value && b instanceof Value) {
           return a.equals(b)
         }
-
         return a === b
       },
       [Operators.GreaterThan]: (a, b) => a > b,
@@ -88,10 +67,21 @@ class InMemoryQueryProcessor<
       // [Operators.In]: (a, b) => b.includes(a),
     }
     const op = ops[predicate.operator]
-    return entities.filter(x => op(this.getFieldValue(predicate.field, x), predicate.value))
+    return entities.filter(x => op(
+      this.getFieldValue(predicate.field, x), predicate.value
+    ))
   }
 
-  private processExpression(expression: Expression<TEntity>, entities: TEntity[]) : readonly TEntity[] {
+  /**
+   * Processes expression against entities
+   * @param expression Expression to process
+   * @param entities Entities to process expression against
+   * @returns Entities that match expression
+   */
+  private processExpression(
+    expression: Expression<TEntity>,
+    entities: TEntity[]
+  ): readonly TEntity[] {
     if (expression.operator === LogicalOperators.And) {
       const arrays = expression.query.map(e => this.execute(e, entities))
       return arrays.reduce((a, b) => a.filter(ele => b.includes(ele)))
