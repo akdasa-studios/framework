@@ -1,4 +1,5 @@
 import { Aggregate, Entity, Identity, Value } from '@lib/domain/models'
+import { QueryBuilder } from '@lib/persistence'
 
 
 export class OrderId extends Identity<string, 'Order'> {}
@@ -27,9 +28,13 @@ export class Order
 {
   constructor(
     id: OrderId,
-    public firstName: string,
-    public lastName: string,
+    public clientName: string,
     public deliveryAddress: Address,
     public price: number,
   ) { super(id) }
 }
+
+const qb = new QueryBuilder<Order>()
+export const clientName = (name: string) => qb.eq('clientName', name)
+export const address = (street: string, city: string, zip: string,) => qb.eq('deliveryAddress', new Address(street, city, zip))
+export const price = (price: number) => qb.eq('price', price)

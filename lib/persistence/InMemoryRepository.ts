@@ -3,7 +3,7 @@ import { Repository } from './Repository'
 import { Predicate, Query, Expression, Binding, Operators, LogicalOperators } from './Query'
 
 
-export abstract class InMemoryRepository<
+export class InMemoryRepository<
   TEntity extends Aggregate<AnyIdentity>
 > implements Repository<TEntity> {
   protected entities = new Map<TEntity['id'], TEntity>()
@@ -74,9 +74,11 @@ class InMemoryQueryProcessor<
         // if (a instanceof Number && b instanceof Number) {
         //   return a.valueOf() === b.valueOf()
         // }
+        // Stryker disable next-line all
         if (a instanceof Value && b instanceof Value) {
           return a.equals(b)
         }
+
         return a === b
       },
       [Operators.GreaterThan]: (a, b) => a > b,
