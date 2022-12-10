@@ -4,12 +4,14 @@
   [![Tests](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml/badge.svg)](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml)
   [![codecov](https://codecov.io/gh/akdasa-studios/framework/branch/main/graph/badge.svg?token=OB1AZJDMY5)](https://codecov.io/gh/akdasa-studios/framework)
   [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fakdasa-studios%2Fframework%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/akdasa-studios/framework/main)
+  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a2f433a5afe841ca8bda8e6025ee4929)](https://www.codacy.com/gh/akdasa-studios/framework/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akdasa-studios/framework&amp;utm_campaign=Badge_Grade)
 </p>
 
 _Framework_ is a simple library we use to build our application. It is based on _Domain Driven Development_ principles. The goals of that framework are to help with:
-1. Create applications using domain-oriented principles.
-2. Create testable and robust applications.
-3. Work on every platform: mobile, desktop, and web.
+
+  1. Create applications using domain-oriented principles.
+  2. Create testable and robust applications.
+  3. Work on every platform: mobile, desktop, and web.
 
 # Documentation
 [Read the docs](./docs/index.md). Documentation is still in progress, but you can already find some useful information. If you have any questions, feel free to ask them in issues. We will try to answer them as soon as possible.
