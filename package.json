@@ -16,8 +16,9 @@
     }
   },
   "scripts": {
-    "test": "jest",
-    "mtest": "stryker run",
+    "test": "jest && stryker run",
+    "test:unit": "jest",
+    "test:mutational": "stryker run",
     "lint": "eslint ./lib --ext .ts",
     "build": "webpack && tsc --emitDeclarationOnly --declaration --outDir ./temp && api-extractor run --local && true"
   },
