@@ -1,3 +1,4 @@
+import { Result } from '@lib/core'
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
 import { Query } from '../Query'
 import { Repository } from '../Repository'
@@ -10,16 +11,17 @@ export class InMemoryRepository<
   protected entities = new Map<TEntity['id'], TEntity>()
   protected processor = new InMemoryQueryProcessor<TEntity>()
 
-  public save(entity: TEntity): void {
+  public save(entity: TEntity): Result<void, string> {
     const copy = Object.create(entity)
     Object.assign(copy, entity)
     this.entities.set(entity.id.value, copy)
+    return Result.ok()
   }
 
-  public get(id: TEntity['id']): TEntity {
+  public get(id: TEntity['id']): Result<TEntity, string> {
     const value = this.entities.get(id.value)
-    if (!value) { throw new Error(`Entity '${id.value}' not found`) }
-    return value
+    if (!value) { return Result.fail(`Entity '${id.value}' not found`) }
+    return Result.ok(value)
   }
 
   public exists(id: TEntity['id']): boolean {
@@ -31,13 +33,11 @@ export class InMemoryRepository<
     return this.processor.execute(query, entities)
   }
 
-  public delete(id: TEntity['id']): void {
+  public delete(id: TEntity['id']): Result<void, string> {
     if (!this.exists(id)) {
-      throw new Error(`Entity '${id.value}' not found`)
+      return Result.fail(`Entity '${id.value}' not found`)
     }
     this.entities.delete(id.value)
+    return Result.ok()
   }
 }
-
-
-
