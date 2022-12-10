@@ -3,6 +3,7 @@ on: push
 
 jobs:
   tests:
+    name: Unit
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,6 +33,7 @@ jobs:
 
 
   mutational-tests:
+    name: Mutational
     needs: tests
     runs-on: ubuntu-latest
     permissions:
