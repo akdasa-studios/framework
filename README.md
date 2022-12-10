@@ -17,6 +17,11 @@ _Framework_ is a simple library we use to build our application. It is based on 
 # Documentation
 [Read the docs](./docs/index.md). Documentation is still in progress, but you can already find some useful information. If you have any questions, feel free to ask them in issues. We will try to answer them as soon as possible.
 
+## Development
+  1. `npm run test` - Run all tests
+  2. `npm run test:unit` - Run unit tests
+  3. `npm run test:mutational` - Run mutational tests
+
 # Show me the code!
 ```ts
 import { UuidIdentity, Aggregate, Entity } from '@akdasa-studios/framework/domain/models'

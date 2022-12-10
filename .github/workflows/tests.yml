@@ -24,7 +24,7 @@ jobs:
 
       # Run tests
       - name: Tests
-        run: npm run test
+        run: npm run test:unit
 
       # Upload test coverage
       - name: Upload coverage to Codecov
@@ -55,6 +55,6 @@ jobs:
 
       # Run tests
       - name: Mutational tests
-        run: npm run build && npm run mtest
+        run: npm run build && npm run test:mutational
         env:
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
