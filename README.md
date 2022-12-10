@@ -1,5 +1,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/akdasa-studios/framework/main/docs/framework.png" height="96px"/>
+
+  [![Tests](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml/badge.svg)](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml)
 </p>
 
 _Framework_ is a simple library we use to build our application. It is based on _Domain Driven Development_ principles. The goals of that framework are to help with:
