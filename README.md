@@ -3,6 +3,7 @@
 
   [![Tests](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml/badge.svg)](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml)
   [![codecov](https://codecov.io/gh/akdasa-studios/framework/branch/main/graph/badge.svg?token=OB1AZJDMY5)](https://codecov.io/gh/akdasa-studios/framework)
+  [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fakdasa-studios%2Fframework%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/akdasa-studios/framework/main)
 </p>
 
 _Framework_ is a simple library we use to build our application. It is based on _Domain Driven Development_ principles. The goals of that framework are to help with:
