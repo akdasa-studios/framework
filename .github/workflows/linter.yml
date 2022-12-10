@@ -1,14 +1,11 @@
-name: Publish
-on:
-  release:
-    types: [created]
+name: Linter
+on: push
 
 jobs:
-  build:
+  linter:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
     steps:
       - uses: actions/checkout@v2
 
@@ -23,11 +20,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build
-      - run: npm run build
-
-      # Publish
-      - run: npm publish --access=public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Run linter
+      - name: Linter
+        run: npm run lint
