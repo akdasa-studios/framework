@@ -1,10 +1,11 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/akdasa-studios/framework/main/docs/logo.svg" height="128px"/>
 
-  [![Tests](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml/badge.svg)](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml)
-  [![codecov](https://codecov.io/gh/akdasa-studios/framework/branch/main/graph/badge.svg?token=OB1AZJDMY5)](https://codecov.io/gh/akdasa-studios/framework)
-  [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fakdasa-studios%2Fframework%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/akdasa-studios/framework/main)
-  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a2f433a5afe841ca8bda8e6025ee4929)](https://www.codacy.com/gh/akdasa-studios/framework/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akdasa-studios/framework&amp;utm_campaign=Badge_Grade)
+<p align="center">
+  <a href="https://github.com/akdasa-studios/framework/actions/workflows/tests.yml"><img src="https://github.com/akdasa-studios/framework/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
+  <a href="https://codecov.io/gh/akdasa-studios/framework"><img src="https://codecov.io/gh/akdasa-studios/framework/branch/main/graph/badge.svg?token=OB1AZJDMY5" alt="codecov"></a>
+  <a href="https://dashboard.stryker-mutator.io/reports/github.com/akdasa-studios/framework/main"><img src="https://img.shields.io/endpoint?style=flat&amp;url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fakdasa-studios%2Fframework%2Fmain" alt="Mutation testing badge"></a>
+  <a href="https://www.codacy.com/gh/akdasa-studios/framework/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akdasa-studios/framework&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/a2f433a5afe841ca8bda8e6025ee4929" alt="Codacy Badge"></a>
 </p>
 
 _Framework_ is a simple library we use to build our application. It is based on _Domain Driven Development_ principles. The goals of that framework are to help with:
