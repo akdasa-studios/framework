@@ -35,13 +35,13 @@ describe('InMemoryRepository', () => {
 
     it('do not update entity until it saved', () => {
       order1.clientName = 'George'
-      expect(repository.get(order1.id).clientName).toEqual('John')
+      expect(repository.get(order1.id).value.clientName).toEqual('John')
     })
 
     it('updates entity if it saved', () => {
       order1.clientName = 'George'
       repository.save(order1)
-      expect(repository.get(order1.id).clientName).toEqual('George')
+      expect(repository.get(order1.id).value.clientName).toEqual('George')
     })
   })
 
@@ -51,13 +51,15 @@ describe('InMemoryRepository', () => {
 
   describe('.get', () => {
     it('returns entity', () => {
-      const result = repository.get(order1.id)
+      const result = repository.get(order1.id).value
       expect(result.equals(order1)).toBeTruthy()
     })
 
-    it('throws error if entity does not exist', () => {
+    it('returns error if entity does not exist', () => {
       const idNotFound = new OrderId('notFound')
-      expect(() => repository.get(idNotFound)).toThrowError('Entity \'notFound\' not found')
+      const result = repository.get(idNotFound)
+      expect(result.isFailure).toBeTruthy()
+      expect(result.error).toEqual('Entity \'notFound\' not found')
     })
   })
 
@@ -86,9 +88,11 @@ describe('InMemoryRepository', () => {
       expect(repository.exists(order1.id)).toBeFalsy()
     })
 
-    it('throws error if entity does not exist', () => {
+    it('returns error if entity does not exist', () => {
       const idNotFound = new OrderId('notFound')
-      expect(() => repository.delete(idNotFound)).toThrowError('Entity \'notFound\' not found')
+      const result = repository.delete(idNotFound)
+      expect(result.isFailure).toBeTruthy()
+      expect(result.error).toEqual('Entity \'notFound\' not found')
     })
   })
 

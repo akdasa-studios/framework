@@ -1,4 +1,5 @@
-import { AnyIdentity, Aggregate } from '@lib/domain/models'
+import { Result } from '@lib/core'
+import { Aggregate, AnyIdentity } from '@lib/domain/models'
 import { Query } from '@lib/persistence'
 
 
@@ -12,14 +13,13 @@ export interface Repository<
    * Save entity.
    * @param entity Entity to save.
    */
-  save(entity: TEntity): void
+  save(entity: TEntity): Result<void, string>
 
   /**
    * Get entity by identity.
    * @param id Identity of the entity to load.
-   * @throws Error if entity does not exist.
    */
-  get(id: TEntity['id']): TEntity
+  get(id: TEntity['id']): Result<TEntity, string>
 
   /**
    * Check if entity exists.
@@ -36,7 +36,6 @@ export interface Repository<
   /**
    * Delete entity by identity.
    * @param id Identity of the entity to remove.
-   * @throws Error if entity does not exist.
    */
-  delete(id: TEntity['id']): void
+  delete(id: TEntity['id']): Result<void, string>
 }
