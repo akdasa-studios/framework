@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/akdasa-studios/framework/main/docs/framework.png" height="96px"/>
+  <img src="https://raw.githubusercontent.com/akdasa-studios/framework/main/docs/logo.svg" height="96px"/>
 
   [![Tests](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml/badge.svg)](https://github.com/akdasa-studios/framework/actions/workflows/tests.yml)
   [![codecov](https://codecov.io/gh/akdasa-studios/framework/branch/main/graph/badge.svg?token=OB1AZJDMY5)](https://codecov.io/gh/akdasa-studios/framework)
