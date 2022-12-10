@@ -55,6 +55,6 @@ jobs:
 
       # Run tests
       - name: Mutational tests
-        run: npm run build && test:mutational
+        run: npm run build && npm run test:mutational
         env:
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
