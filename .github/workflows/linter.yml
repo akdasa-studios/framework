@@ -3,6 +3,7 @@ on: push
 
 jobs:
   linter:
+    name: Linter
     runs-on: ubuntu-latest
     permissions:
       contents: read
