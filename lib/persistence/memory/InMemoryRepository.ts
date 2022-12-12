@@ -11,6 +11,10 @@ export class InMemoryRepository<
   protected entities = new Map<TEntity['id'], TEntity>()
   protected processor = new InMemoryQueryProcessor<TEntity>()
 
+  public all(): readonly TEntity[] {
+    return Array.from(this.entities.values())
+  }
+
   public save(entity: TEntity): Result<void, string> {
     const copy = Object.create(entity)
     Object.assign(copy, entity)
