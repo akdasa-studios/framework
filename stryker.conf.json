@@ -21,5 +21,6 @@
     "high": 80,
     "low": 60,
     "break": 100
-  }
+  },
+  "incremental": true
 }

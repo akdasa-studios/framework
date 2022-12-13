@@ -15,7 +15,7 @@ describe('InMemoryQueryProcessor', () => {
   const order2 = new Order(
     new OrderId('1234'), 'Alex',
     new Address('Liberation Bulevard', 'Belgrade', 'Zip'),
-    200
+    200, ['tag1']
   )
   const entities = [order1, order2]
 
@@ -64,9 +64,21 @@ describe('InMemoryQueryProcessor', () => {
     })
 
     it('should return object if value is an array', () => {
-      const query = q.contains('tags', 'new')
-      const result = sut.execute(query, entities)
-      expect(result).toEqual([order1])
+      expect(
+        sut.execute(q.contains('tags', 'new'), entities)
+      ).toEqual([order1])
+
+      expect(
+        sut.execute(q.contains('tags', 'tag1'), entities)
+      ).toEqual([order1, order2])
+
+      expect(
+        sut.execute(q.contains('tags', 'notFound'), entities)
+      ).toEqual([])
+
+      expect(
+        sut.execute(q.contains('price', 100), entities)
+      ).toEqual([])
     })
   })
 
