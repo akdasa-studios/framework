@@ -66,7 +66,12 @@ export class InMemoryQueryProcessor<
       [Operators.LessThanOrEqual]: (a, b) => a <= b,
       [Operators.Contains]: (a, b) => {
         // if (typeof a === 'number') { return a.toString().includes(b) }
-        return a.includes(b)
+        if (a instanceof Array) {
+          return a.filter(x => x.includes(b)).length > 0
+        } else if (typeof a === 'string') {
+          return a.includes(b)
+        }
+        return false
       },
     }
     const op = ops[predicate.operator]

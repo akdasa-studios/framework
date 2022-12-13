@@ -10,12 +10,12 @@ describe('InMemoryQueryProcessor', () => {
   const order1 = new Order(
     new OrderId('123'), 'John',
     new Address('2nd Avenue', 'New York', 'Zip'),
-    100
+    100, ['tag1', 'tag2', 'new']
   )
   const order2 = new Order(
     new OrderId('1234'), 'Alex',
     new Address('Liberation Bulevard', 'Belgrade', 'Zip'),
-    200
+    200, ['tag1']
   )
   const entities = [order1, order2]
 
@@ -63,12 +63,23 @@ describe('InMemoryQueryProcessor', () => {
       expect(result).toEqual([order1])
     })
 
-    // it('should return object if value is a number', () => {
-    //   const query = q.contains('price', 1)
-    //   const result = sut.execute(query, entities)
-    //   expect(result).toEqual([order1])
-    // })
+    it('should return object if value is an array', () => {
+      expect(
+        sut.execute(q.contains('tags', 'new'), entities)
+      ).toEqual([order1])
 
+      expect(
+        sut.execute(q.contains('tags', 'tag1'), entities)
+      ).toEqual([order1, order2])
+
+      expect(
+        sut.execute(q.contains('tags', 'notFound'), entities)
+      ).toEqual([])
+
+      expect(
+        sut.execute(q.contains('price', 100), entities)
+      ).toEqual([])
+    })
   })
 
   /* ------------------------------ Complex Query ----------------------------- */
