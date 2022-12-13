@@ -63,12 +63,11 @@ describe('InMemoryQueryProcessor', () => {
       expect(result).toEqual([order1])
     })
 
-    it('should return object if value is a number', () => {
+    it('should return object if value is an array', () => {
       const query = q.contains('tags', 'new')
       const result = sut.execute(query, entities)
       expect(result).toEqual([order1])
     })
-
   })
 
   /* ------------------------------ Complex Query ----------------------------- */
