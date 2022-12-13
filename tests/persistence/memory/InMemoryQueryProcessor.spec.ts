@@ -10,7 +10,7 @@ describe('InMemoryQueryProcessor', () => {
   const order1 = new Order(
     new OrderId('123'), 'John',
     new Address('2nd Avenue', 'New York', 'Zip'),
-    100
+    100, ['tag1', 'tag2', 'new']
   )
   const order2 = new Order(
     new OrderId('1234'), 'Alex',
@@ -63,11 +63,11 @@ describe('InMemoryQueryProcessor', () => {
       expect(result).toEqual([order1])
     })
 
-    // it('should return object if value is a number', () => {
-    //   const query = q.contains('price', 1)
-    //   const result = sut.execute(query, entities)
-    //   expect(result).toEqual([order1])
-    // })
+    it('should return object if value is a number', () => {
+      const query = q.contains('tags', 'new')
+      const result = sut.execute(query, entities)
+      expect(result).toEqual([order1])
+    })
 
   })
 

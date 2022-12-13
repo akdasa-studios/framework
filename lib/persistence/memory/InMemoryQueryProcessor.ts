@@ -66,6 +66,9 @@ export class InMemoryQueryProcessor<
       [Operators.LessThanOrEqual]: (a, b) => a <= b,
       [Operators.Contains]: (a, b) => {
         // if (typeof a === 'number') { return a.toString().includes(b) }
+        if (a instanceof Array) {
+          return a.filter(x => x.includes(b)).length > 0
+        }
         return a.includes(b)
       },
     }

@@ -31,6 +31,7 @@ export class Order
     public clientName: string,
     public deliveryAddress: Address,
     public price: number,
+    public tags: string[] = [],
   ) { super(id) }
 }
 
