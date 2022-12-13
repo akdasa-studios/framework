@@ -30,8 +30,8 @@ export class InMemoryQueryProcessor<
     entities: TEntity[]
   ): readonly TEntity[] {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    type a = { [ky: string]: (a: any, b: any) => boolean; };
-    const ops: a = {
+    type funcType = { [ky: string]: (a: any, b: any) => boolean; };
+    const ops: funcType = {
       [Operators.Equal]: (a, b) => {
         // if (a instanceof Date && b instanceof Date) {
         //   return a.getTime() === b.getTime()
@@ -64,7 +64,10 @@ export class InMemoryQueryProcessor<
       [Operators.GreaterThanOrEqual]: (a, b) => a >= b,
       [Operators.LessThan]: (a, b) => a < b,
       [Operators.LessThanOrEqual]: (a, b) => a <= b,
-      // [Operators.In]: (a, b) => b.includes(a),
+      [Operators.Contains]: (a, b) => {
+        // if (typeof a === 'number') { return a.toString().includes(b) }
+        return a.includes(b)
+      },
     }
     const op = ops[predicate.operator]
     return entities.filter(x => op(
@@ -95,6 +98,12 @@ export class InMemoryQueryProcessor<
   }
 
   private getFieldValue(f: Binding<TEntity>, o: TEntity) {
-    return o[f as string]
+    // get netsed field value by string separated by dots
+    const fields = f.split('.')
+    let value = o
+    for (const field of fields) {
+      value = value[field]
+    }
+    return value
   }
 }

@@ -56,6 +56,21 @@ describe('InMemoryQueryProcessor', () => {
     })
   })
 
+  describe('in operator', () => {
+    it('should return object if value is a string', () => {
+      const query = q.contains('deliveryAddress.street', 'Avenue')
+      const result = sut.execute(query, entities)
+      expect(result).toEqual([order1])
+    })
+
+    // it('should return object if value is a number', () => {
+    //   const query = q.contains('price', 1)
+    //   const result = sut.execute(query, entities)
+    //   expect(result).toEqual([order1])
+    // })
+
+  })
+
   /* ------------------------------ Complex Query ----------------------------- */
 
   it('not', () => {
