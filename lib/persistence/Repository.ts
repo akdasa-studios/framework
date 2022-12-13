@@ -10,6 +10,12 @@ export interface Repository<
   TEntity extends Aggregate<AnyIdentity>
 > {
   /**
+   * Get all entities.
+   * @returns All entities.
+   */
+  all(): readonly TEntity[]
+
+  /**
    * Save entity.
    * @param entity Entity to save.
    */
