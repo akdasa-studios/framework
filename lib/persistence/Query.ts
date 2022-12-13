@@ -9,7 +9,7 @@ export enum Operators {
   GreaterThanOrEqual = 'gte',
   LessThan = 'lt',
   LessThanOrEqual = 'lte',
-  In = 'in',
+  Contains = 'contains',
 }
 
 /**
@@ -21,11 +21,17 @@ export enum LogicalOperators {
   Not = 'not',
 }
 
+type NestedKeyOf<ObjectType extends object> =
+{[Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
+? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
+: `${Key}`
+}[keyof ObjectType & (string | number)];
+
 /**
  * Binding between Entity field and database column.
  */
 export type Binding<TEntity extends Aggregate<AnyIdentity>> =
-  keyof TEntity // todo: | ((x: TEntity) => void)
+  NestedKeyOf<TEntity> // todo: | ((x: TEntity) => void)
 
 /**
  * A predicate is a comparison between a field and a value.
@@ -63,28 +69,32 @@ export class QueryBuilder<TEntity extends Aggregate<AnyIdentity>> {
   /*                            Comparison Operators                            */
   /* -------------------------------------------------------------------------- */
 
-  op(field: keyof TEntity, operator: Operators, value: unknown): Query<TEntity> {
+  op(field: Binding<TEntity>, operator: Operators, value: unknown): Query<TEntity> {
     return new Predicate<TEntity>(field, operator, value)
   }
 
-  eq(field: keyof TEntity, value: unknown): Query<TEntity> {
+  eq(field: Binding<TEntity>, value: unknown): Query<TEntity> {
     return this.op(field, Operators.Equal, value)
   }
 
-  gte(field: keyof TEntity, value: unknown): Query<TEntity> {
+  gte(field: Binding<TEntity>, value: unknown): Query<TEntity> {
     return this.op(field, Operators.GreaterThanOrEqual, value)
   }
 
-  gt(field: keyof TEntity, value: unknown): Query<TEntity> {
+  gt(field: Binding<TEntity>, value: unknown): Query<TEntity> {
     return this.op(field, Operators.GreaterThan, value)
   }
 
-  lte(field: keyof TEntity, value: unknown): Query<TEntity> {
+  lte(field: Binding<TEntity>, value: unknown): Query<TEntity> {
     return this.op(field, Operators.LessThanOrEqual, value)
   }
 
-  lt(field: keyof TEntity, value: unknown): Query<TEntity> {
+  lt(field: Binding<TEntity>, value: unknown): Query<TEntity> {
     return this.op(field, Operators.LessThan, value)
+  }
+
+  contains(field: Binding<TEntity>, value: unknown): Query<TEntity> {
+    return this.op(field, Operators.Contains, value)
   }
 
   /* -------------------------------------------------------------------------- */
