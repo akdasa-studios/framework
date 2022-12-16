@@ -35,10 +35,56 @@ export class ProcessorResult<TCommandResult extends AnyResult> {
 }
 
 /**
+ * Transaction is a marker for a group of commands.
+ */
+export class Transaction {
+  /**
+   * Initialize a new instance of the Transaction class.
+   * @param value Unique identifier of the transaction.
+   */
+  constructor(public readonly value: string) {}
+}
+
+/**
+ * ExecutionStack is a stack of executed commands.
+ */
+interface ExecutionHistoryLine {
+  command: AnyCommand,
+  transactionId: Transaction | undefined
+}
+
+/**
+ * ExecutionStack is a stack of executed commands.
+ */
+class ExecutionStack {
+  private lines: ExecutionHistoryLine[] = []
+
+  public push(command: AnyCommand, transactionId?: Transaction) {
+    this.lines.push({command, transactionId})
+  }
+
+  public includes(command: AnyCommand) {
+    return this.lines.map(r => r.command).includes(command)
+  }
+
+  public pop(): readonly AnyCommand[] {
+    const lastRow = this.lines.pop()
+    if (!lastRow) { return [] }
+    if (!lastRow.transactionId) { return [lastRow.command] }
+
+    const result = [lastRow.command]
+    while (this.lines.at(-1)?.transactionId === lastRow.transactionId) {
+      result.push((this.lines.pop() as ExecutionHistoryLine).command)
+    }
+    return result
+  }
+}
+
+/**
  * Processor executes commands.
  */
 export class Processor<TContext> {
-  private stack: AnyCommand[] = []
+  private stack = new ExecutionStack()
 
   /**
    * Initialize a new instance of the Processor class.
@@ -51,15 +97,17 @@ export class Processor<TContext> {
   /**
    * Excecute the command.
    * @param command Command to process.
+   * @param transaction Transaction.
    * @returns {ProcessorResult<TResult>} Returns the result execution.
    */
   execute<TResult extends AnyResult>(
-    command: Command<TContext, TResult>
+    command: Command<TContext, TResult>,
+    transaction?: Transaction
   ): ProcessorResult<TResult> {
     if (this.stack.includes(command)) {
       return new ProcessorResult(Fail('Command is already executed.'))
     }
-    this.stack.push(command)
+    this.stack.push(command, transaction)
     const commandResult = command.execute(this.context)
     return new ProcessorResult<TResult>(Ok(), commandResult)
   }
@@ -67,13 +115,15 @@ export class Processor<TContext> {
   /**
    * Revert the last executed command.
    */
-  revert<TResult extends AnyResult>(): ProcessorResult<TResult> {
-    const command = this.stack.pop()
-    if (!command) {
+  revert(): ProcessorResult<Result<void, string>> {
+    const commands = this.stack.pop()
+    if (commands.length === 0) {
       return new ProcessorResult(Fail('No command to revert.'))
     }
 
-    const commandResult = command.revert(this.context)
-    return new ProcessorResult<TResult>(Ok(), commandResult)
+    for (const command of commands) {
+      command.revert(this.context)
+    }
+    return new ProcessorResult(Ok())
   }
 }
