@@ -1,5 +1,5 @@
 import { Result } from '@lib/core'
-import { Processor, Command } from '@lib/commands'
+import { Processor, Command, Transaction } from '@lib/commands'
 
 class CalculatorContext {
   constructor(public value: number) { }
@@ -88,6 +88,54 @@ describe('Processor', () => {
       const result = processor.revert()
       expect(result.isCommandExecuted).toBeFalsy()
       expect(result.processorResult.value).toEqual('No command to revert.')
+    })
+  })
+
+  /* -------------------------------------------------------------------------- */
+  /*                                Transactions                                */
+  /* -------------------------------------------------------------------------- */
+
+  describe('transactions', () => {
+    it('should revert one and last commands in transaction', () => {
+      const command1 = new DivCommand(2)
+      const transaction = new Transaction('some transaction')
+      processor.execute(command1, transaction)
+      processor.revert()
+      expect(context.value).toBe(100)
+    })
+
+    it('should revert all commands of transaction', () => {
+      const command1 = new DivCommand(2)
+      const command2 = new DivCommand(2)
+      const transaction = new Transaction('some transaction')
+      processor.execute(command1, transaction)
+      processor.execute(command2, transaction)
+      processor.revert()
+      expect(context.value).toBe(100)
+    })
+
+    it('should not revert commands out of transaction', () => {
+      const command1 = new DivCommand(2)
+      const command2 = new DivCommand(2)
+      const command3 = new DivCommand(2)
+      const transaction = new Transaction('some transaction')
+      processor.execute(command1)
+      processor.execute(command2, transaction)
+      processor.execute(command3, transaction)
+      processor.revert()
+      expect(context.value).toBe(50)
+    })
+
+    it('should not revert commands from other transaction', () => {
+      const command1 = new DivCommand(2)
+      const command2 = new DivCommand(2)
+      const transaction1 = new Transaction('some transaction')
+      const transaction2 = new Transaction('some transaction')
+      processor.execute(command1, transaction1)
+      processor.execute(command2, transaction2)
+
+      processor.revert()
+      expect(context.value).toBe(50)
     })
   })
 })
