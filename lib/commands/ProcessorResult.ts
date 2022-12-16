@@ -1,4 +1,4 @@
-import { AnyResult, NoResult, Result } from '@lib/core';
+import { AnyResult, NoResult, Result } from '@lib/core'
 
 
 
@@ -14,7 +14,7 @@ export class ProcessorResult<TCommandResult extends AnyResult> {
    * @note This property is true if the command is executed successfully or failed.
    */
   get isCommandExecuted(): boolean {
-    return this.processorResult.isSuccess;
+    return this.processorResult.isSuccess
   }
 
   /**
@@ -22,7 +22,7 @@ export class ProcessorResult<TCommandResult extends AnyResult> {
    * @returns True if the command is executed successfully, otherwise false.
    */
   get isCommandSucceeded(): boolean {
-    return this.commandResult.isSuccess;
+    return this.commandResult.isSuccess
   }
 
   /**
@@ -30,6 +30,6 @@ export class ProcessorResult<TCommandResult extends AnyResult> {
    * @returns {TCommandResult['value']} Returns the result of the executed command.
    */
   get value(): TCommandResult['value'] | TCommandResult['error'] {
-    return this.commandResult.value;
+    return this.commandResult.value
   }
 }
