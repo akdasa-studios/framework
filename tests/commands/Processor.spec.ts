@@ -125,5 +125,17 @@ describe('Processor', () => {
       processor.revert()
       expect(context.value).toBe(50)
     })
+
+    it('should not revert commands from other transaction', () => {
+      const command1 = new DivCommand(2)
+      const command2 = new DivCommand(2)
+      const transaction1 = new Transaction('some transaction')
+      const transaction2 = new Transaction('some transaction')
+      processor.execute(command1, transaction1)
+      processor.execute(command2, transaction2)
+
+      processor.revert()
+      expect(context.value).toBe(50)
+    })
   })
 })
