@@ -7,7 +7,7 @@ import { Transaction } from './Transaction'
  */
 export interface ExecutionHistoryLine {
   command: AnyCommand,
-  transactionId: Transaction | undefined
+  transaction: Transaction | undefined
 }
 
 /**
@@ -16,8 +16,8 @@ export interface ExecutionHistoryLine {
 export class ExecutionStack {
   private lines: ExecutionHistoryLine[] = []
 
-  public push(command: AnyCommand, transactionId?: Transaction) {
-    this.lines.push({ command, transactionId })
+  public push(command: AnyCommand, transaction?: Transaction) {
+    this.lines.push({ command, transaction: transaction })
   }
 
   public includes(command: AnyCommand) {
@@ -27,10 +27,10 @@ export class ExecutionStack {
   public pop(): readonly AnyCommand[] {
     const lastRow = this.lines.pop()
     if (!lastRow) { return [] }
-    if (!lastRow.transactionId) { return [lastRow.command] }
+    if (!lastRow.transaction) { return [lastRow.command] }
 
     const result = [lastRow.command]
-    while (this.lines.at(-1)?.transactionId === lastRow.transactionId) {
+    while (this.lines.at(-1)?.transaction?.id === lastRow.transaction.id) {
       result.push((this.lines.pop() as ExecutionHistoryLine).command)
     }
     return result
