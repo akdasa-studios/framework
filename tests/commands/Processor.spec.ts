@@ -98,7 +98,7 @@ describe('Processor', () => {
   describe('transactions', () => {
     it('should revert one and last commands in transaction', () => {
       const command1 = new DivCommand(2)
-      const transaction = new Transaction('some transaction')
+      const transaction = new Transaction()
       processor.execute(command1, transaction)
       processor.revert()
       expect(context.value).toBe(100)
@@ -107,7 +107,7 @@ describe('Processor', () => {
     it('should revert all commands of transaction', () => {
       const command1 = new DivCommand(2)
       const command2 = new DivCommand(2)
-      const transaction = new Transaction('some transaction')
+      const transaction = new Transaction()
       processor.execute(command1, transaction)
       processor.execute(command2, transaction)
       processor.revert()
@@ -118,7 +118,7 @@ describe('Processor', () => {
       const command1 = new DivCommand(2)
       const command2 = new DivCommand(2)
       const command3 = new DivCommand(2)
-      const transaction = new Transaction('some transaction')
+      const transaction = new Transaction()
       processor.execute(command1)
       processor.execute(command2, transaction)
       processor.execute(command3, transaction)
@@ -129,8 +129,8 @@ describe('Processor', () => {
     it('should not revert commands from other transaction', () => {
       const command1 = new DivCommand(2)
       const command2 = new DivCommand(2)
-      const transaction1 = new Transaction('some transaction')
-      const transaction2 = new Transaction('some transaction')
+      const transaction1 = new Transaction()
+      const transaction2 = new Transaction()
       processor.execute(command1, transaction1)
       processor.execute(command2, transaction2)
 
