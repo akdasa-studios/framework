@@ -78,14 +78,14 @@ describe('Processor', () => {
       expect(context.value).toBe(100) // 50 -> 100
     })
 
-    it('returns success if command is reverted', () => {
-      const result = processor.revert()
+    it('returns success if command is reverted', async () => {
+      const result = await processor.revert()
       expect(result.isCommandExecuted).toBeTruthy()
     })
 
-    it('returns failure if no command to revert', () => {
-      processor.revert()
-      const result = processor.revert()
+    it('returns failure if no command to revert', async () => {
+      await processor.revert()
+      const result = await processor.revert()
       expect(result.isCommandExecuted).toBeFalsy()
       expect(result.processorResult.value).toEqual('No command to revert.')
     })
@@ -96,33 +96,33 @@ describe('Processor', () => {
   /* -------------------------------------------------------------------------- */
 
   describe('transactions', () => {
-    it('should revert one and last commands in transaction', () => {
+    it('should revert one and last commands in transaction', async () => {
       const command1 = new DivCommand(2)
       const transaction = new Transaction()
-      processor.execute(command1, transaction)
-      processor.revert()
+      await processor.execute(command1, transaction)
+      await processor.revert()
       expect(context.value).toBe(100)
     })
 
-    it('should revert all commands of transaction', () => {
+    it('should revert all commands of transaction', async () => {
       const command1 = new DivCommand(2)
       const command2 = new DivCommand(2)
       const transaction = new Transaction()
-      processor.execute(command1, transaction)
-      processor.execute(command2, transaction)
-      processor.revert()
+      await processor.execute(command1, transaction)
+      await processor.execute(command2, transaction)
+      await processor.revert()
       expect(context.value).toBe(100)
     })
 
-    it('should not revert commands out of transaction', () => {
+    it('should not revert commands out of transaction', async () => {
       const command1 = new DivCommand(2)
       const command2 = new DivCommand(2)
       const command3 = new DivCommand(2)
       const transaction = new Transaction()
-      processor.execute(command1)
-      processor.execute(command2, transaction)
-      processor.execute(command3, transaction)
-      processor.revert()
+      await processor.execute(command1)
+      await processor.execute(command2, transaction)
+      await processor.execute(command3, transaction)
+      await processor.revert()
       expect(context.value).toBe(50)
     })
 
@@ -134,7 +134,7 @@ describe('Processor', () => {
       await processor.execute(command1, transaction1)
       await processor.execute(command2, transaction2)
 
-      processor.revert()
+      await processor.revert()
       expect(context.value).toBe(50)
     })
   })
