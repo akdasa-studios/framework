@@ -25,15 +25,15 @@ export class Processor<TContext> {
    * @param transaction Transaction.
    * @returns {ProcessorResult<TResult>} Returns the result execution.
    */
-  execute<TResult extends AnyResult>(
+  async execute<TResult extends AnyResult>(
     command: Command<TContext, TResult>,
     transaction?: Transaction
-  ): ProcessorResult<TResult> {
+  ): Promise<ProcessorResult<TResult>> {
     if (this.stack.includes(command)) {
       return new ProcessorResult(Fail('Command is already executed.'))
     }
     this.stack.push(command, transaction)
-    const commandResult = command.execute(this.context)
+    const commandResult = await command.execute(this.context)
     return new ProcessorResult<TResult>(Ok(), commandResult)
   }
 

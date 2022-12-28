@@ -9,7 +9,7 @@ class DivCommand implements Command<CalculatorContext, Result<number, string>> {
   private _prevValue = 0
   constructor(public readonly divisor: number) { }
 
-  execute(context: CalculatorContext): Result<number, string> {
+  async execute(context: CalculatorContext): Promise<Result<number, string>> {
     if (this.divisor === 0) { return Result.fail('Cannot divide by zero.') }
     this._prevValue = context.value
     context.value = context.value / this.divisor
@@ -42,25 +42,25 @@ describe('Processor', () => {
       expect(context.value).toBe(50) // 100 / 2
     })
 
-    it('returns result of execution', () => {
-      const result = processor.execute(command)
+    it('returns result of execution', async () => {
+      const result = await processor.execute(command)
       expect(result.isCommandExecuted).toBeTruthy()
       expect(result.isCommandSucceeded).toBeTruthy()
       expect(result.value).toBe(50) // 100 / 2
     })
 
-    it('returns failure if command failed', () => {
-      const result = processor.execute(new DivCommand(0))
+    it('returns failure if command failed', async () => {
+      const result = await processor.execute(new DivCommand(0))
       expect(result.isCommandExecuted).toBeTruthy()
       expect(result.isCommandSucceeded).toBeFalsy()
       expect(result.value).toBe('Cannot divide by zero.')
     })
 
-    it('returns failure if command is already executed', () => {
-      processor.execute(command)
-      expect(processor.execute(command).isCommandExecuted).toBeFalsy()
-      expect(processor.execute(command).processorResult.value).toEqual('Command is already executed.')
-      expect(processor.execute(command).value).toBeUndefined()
+    it('returns failure if command is already executed', async () => {
+      await processor.execute(command)
+      expect((await processor.execute(command)).isCommandExecuted).toBeFalsy()
+      expect((await processor.execute(command)).processorResult.value).toEqual('Command is already executed.')
+      expect((await processor.execute(command)).value).toBeUndefined()
     })
   })
 
@@ -126,13 +126,13 @@ describe('Processor', () => {
       expect(context.value).toBe(50)
     })
 
-    it('should not revert commands from other transaction', () => {
+    it('should not revert commands from other transaction', async () => {
       const command1 = new DivCommand(2)
       const command2 = new DivCommand(2)
       const transaction1 = new Transaction()
       const transaction2 = new Transaction()
-      processor.execute(command1, transaction1)
-      processor.execute(command2, transaction2)
+      await processor.execute(command1, transaction1)
+      await processor.execute(command2, transaction2)
 
       processor.revert()
       expect(context.value).toBe(50)
