@@ -13,7 +13,7 @@ export interface Command<
    * @param context The context in which the command is executed.
    * @returns The result of the command.
    */
-  execute(context: TContext): TResult
+  execute(context: TContext): Promise<TResult>
 
   /**
    * Reverts the command.

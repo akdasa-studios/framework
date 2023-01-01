@@ -13,35 +13,35 @@ export interface Repository<
    * Get all entities.
    * @returns All entities.
    */
-  all(): readonly TEntity[]
+  all(): Promise<Result<readonly TEntity[]>>
 
   /**
    * Save entity.
    * @param entity Entity to save.
    */
-  save(entity: TEntity): Result<void, string>
+  save(entity: TEntity): Promise<Result<void, string>>
 
   /**
    * Get entity by identity.
    * @param id Identity of the entity to load.
    */
-  get(id: TEntity['id']): Result<TEntity, string>
+  get(id: TEntity['id']): Promise<Result<TEntity, string>>
 
   /**
    * Check if entity exists.
    * @param id Identity of the entity to check.
    */
-  exists(id: TEntity['id']): boolean
+  exists(id: TEntity['id']): Promise<boolean>
 
   /**
    * Find entities by query.
    * @param query Query to find entities by.
    */
-  find(query: Query<TEntity>): readonly TEntity[]
+  find(query: Query<TEntity>): Promise<Result<readonly TEntity[]>>
 
   /**
    * Delete entity by identity.
    * @param id Identity of the entity to remove.
    */
-  delete(id: TEntity['id']): Result<void, string>
+  delete(id: TEntity['id']): Promise<Result<void, string>>
 }
