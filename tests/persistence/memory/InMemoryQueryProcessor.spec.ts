@@ -104,6 +104,26 @@ describe('InMemoryQueryProcessor', () => {
       const result = sut.execute(query, entities)
       expect(result).toEqual([])
     })
+
+    it('should return object if value is of Identity type', () => {
+      const query = q.in('id', [new OrderId(order1.id.value)])
+      const result = sut.execute(query, entities)
+      expect(result).toEqual([order1])
+    })
+
+    it('should return object if value is of Identity type', () => {
+      const query = q.in('id', [new OrderId('404')])
+      const result = sut.execute(query, entities)
+      expect(result).toEqual([])
+    })
+
+    it('should return object if value is of Value type', () => {
+      const query = q.in('deliveryAddress', [
+        new Address('Liberation Bulevard', 'Belgrade', 'Zip')
+      ])
+      const result = sut.execute(query, entities)
+      expect(result).toEqual([order2])
+    })
   })
 
   /* ------------------------------ Complex Query ----------------------------- */

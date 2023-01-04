@@ -76,8 +76,9 @@ export class InMemoryQueryProcessor<
         return false
       },
       [Operators.In]: (a, b) => {
-        console.log(a, b)
-        return b.includes(a)
+        if (a instanceof Value)         { return b.findIndex(x => x.equals(a)) !== -1 }
+        else if (a instanceof Identity) { return b.findIndex(x => x.equals(a)) !== -1 }
+        else return b.includes(a)
       },
     }
     const op = ops[predicate.operator]
