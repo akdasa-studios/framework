@@ -56,7 +56,7 @@ describe('InMemoryQueryProcessor', () => {
     })
   })
 
-  describe('in operator', () => {
+  describe('contains operator', () => {
     it('should return object if value is a string', () => {
       const query = q.contains('deliveryAddress.street', 'Avenue')
       const result = sut.execute(query, entities)
@@ -79,6 +79,22 @@ describe('InMemoryQueryProcessor', () => {
       expect(
         sut.execute(q.contains('price', 100), entities)
       ).toEqual([])
+    })
+  })
+
+  /* ----------------------------------- In ----------------------------------- */
+
+  describe('in operator', () => {
+    it('should return object if value is in array', () => {
+      const query = q.in('deliveryAddress.street', ['2nd Avenue'])
+      const result = sut.execute(query, entities)
+      expect(result).toEqual([order1])
+    })
+
+    it('should not return object if value is not in array', () => {
+      const query = q.in('deliveryAddress.street', ['Bhaktivedanta Marg'])
+      const result = sut.execute(query, entities)
+      expect(result).toEqual([])
     })
   })
 

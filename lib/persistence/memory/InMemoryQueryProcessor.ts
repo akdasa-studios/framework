@@ -73,6 +73,10 @@ export class InMemoryQueryProcessor<
         }
         return false
       },
+      [Operators.In]: (a, b) => {
+        console.log(a, b)
+        return b.includes(a)
+      },
     }
     const op = ops[predicate.operator]
     return entities.filter(x => op(

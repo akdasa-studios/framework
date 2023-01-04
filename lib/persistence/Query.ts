@@ -10,6 +10,7 @@ export enum Operators {
   LessThan = 'lt',
   LessThanOrEqual = 'lte',
   Contains = 'contains',
+  In = 'in',
 }
 
 /**
@@ -95,6 +96,10 @@ export class QueryBuilder<TEntity extends Aggregate<AnyIdentity>> {
 
   contains(field: Binding<TEntity>, value: unknown): Query<TEntity> {
     return this.op(field, Operators.Contains, value)
+  }
+
+  in(field: Binding<TEntity>, value: unknown[]): Query<TEntity> {
+    return this.op(field, Operators.In, value)
   }
 
   /* -------------------------------------------------------------------------- */
