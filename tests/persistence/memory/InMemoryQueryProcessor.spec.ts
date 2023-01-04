@@ -19,6 +19,14 @@ describe('InMemoryQueryProcessor', () => {
   )
   const entities = [order1, order2]
 
+  it('find by identity', () => {
+    const result = sut.execute(
+      q.eq('id', new OrderId(order1.id.value)),
+      entities
+    )
+    expect(result).toEqual([order1])
+  })
+
   it('returns entities if found', () => {
     const result = sut.execute(clientName('John'), entities)
     expect(result).toEqual([order1])

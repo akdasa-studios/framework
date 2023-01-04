@@ -1,4 +1,4 @@
-import { Aggregate, AnyIdentity, Value } from '@lib/domain/models'
+import { Aggregate, AnyIdentity, Identity, Value } from '@lib/domain/models'
 import { Binding, Expression, LogicalOperators, Operators, Predicate, Query } from '../Query'
 
 export class InMemoryQueryProcessor<
@@ -54,8 +54,10 @@ export class InMemoryQueryProcessor<
         // if (a instanceof Number && b instanceof Number) {
         //   return a.valueOf() === b.valueOf()
         // }
-        // Stryker disable next-line all
-        if (a instanceof Value && b instanceof Value) {
+        if (a instanceof Value) {
+          return a.equals(b)
+        }
+        if (a instanceof Identity) {
           return a.equals(b)
         }
         return a === b

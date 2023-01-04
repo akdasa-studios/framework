@@ -10,6 +10,7 @@ export class Transaction {
    * Initialize a new instance of the Transaction class.
    * @param value Unique identifier of the transaction.
    */
+
   constructor() {
     this._id = Math.random().toString(36)
   }
