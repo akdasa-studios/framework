@@ -71,7 +71,9 @@ export class InMemoryQueryProcessor<
         if (a instanceof Array) {
           return a.filter(x => x.includes(b)).length > 0
         } else if (typeof a === 'string') {
-          return a.includes(b)
+          // Stryker disable next-line all
+          const normalize = (str) => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          return normalize(a).includes(normalize(b))
         }
         return false
       },

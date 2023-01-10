@@ -7,17 +7,21 @@ describe('InMemoryQueryProcessor', () => {
   const q = new QueryBuilder<Order>()
   const sut = new InMemoryQueryProcessor<Order>()
 
-  const order1 = new Order(
-    new OrderId('123'), 'John',
-    new Address('2nd Avenue', 'New York', 'Zip'),
-    100, ['tag1', 'tag2', 'new']
-  )
-  const order2 = new Order(
-    new OrderId('1234'), 'Alex',
-    new Address('Liberation Bulevard', 'Belgrade', 'Zip'),
-    200, ['tag1']
-  )
-  const entities = [order1, order2]
+  let order1, order2, entities
+
+  beforeEach(() => {
+    order1 = new Order(
+      new OrderId('123'), 'John',
+      new Address('2nd Avenue', 'New York', 'Zip'),
+      100, ['tag1', 'tag2', 'new']
+    )
+    order2 = new Order(
+      new OrderId('1234'), 'Alex',
+      new Address('Liberation Bulevard', 'Belgrade', 'Zip'),
+      200, ['tag1']
+    )
+    entities = [order1, order2]
+  })
 
   it('find by identity', () => {
     const result = sut.execute(
@@ -67,6 +71,13 @@ describe('InMemoryQueryProcessor', () => {
   describe('contains operator', () => {
     it('should return object if value is a string', () => {
       const query = q.contains('deliveryAddress.street', 'Avenue')
+      const result = sut.execute(query, entities)
+      expect(result).toEqual([order1])
+    })
+
+    it('should ignore case and diacritics', () => {
+      order1.clientName = 'Dhṛtarāṣṭra'
+      const query = q.contains('clientName', 'dhrtarastra')
       const result = sut.execute(query, entities)
       expect(result).toEqual([order1])
     })
