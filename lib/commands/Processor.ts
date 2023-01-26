@@ -20,7 +20,7 @@ export class Processor<TContext> {
     public readonly context: TContext
   ) { }
 
-  get commandExecuted() {
+  get commandExecuted(): Event<Command<TContext, AnyResult>> {
     return this.commandExecutedEvent
   }
 
