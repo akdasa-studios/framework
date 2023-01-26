@@ -10,7 +10,8 @@ import { Transaction } from './Transaction'
  */
 export class Processor<TContext> {
   private stack = new ExecutionStack()
-  private commandExecutedEvent = new Event<Command<TContext, AnyResult>>()
+  public readonly commandExecuted = new Event<Command<TContext, AnyResult>>()
+  public readonly commandReverted = new Event<Command<TContext, AnyResult>>()
 
   /**
    * Initialize a new instance of the Processor class.
@@ -19,10 +20,6 @@ export class Processor<TContext> {
   constructor(
     public readonly context: TContext
   ) { }
-
-  get commandExecuted(): Event<Command<TContext, AnyResult>> {
-    return this.commandExecutedEvent
-  }
 
   /**
    * Excecute the command.
@@ -54,6 +51,7 @@ export class Processor<TContext> {
 
     for (const command of commands) {
       await command.revert(this.context)
+      this.commandReverted.notify(command)
     }
     return new ProcessorResult(Ok())
   }

@@ -143,7 +143,6 @@ describe('Processor', () => {
     const command = new DivCommand(2)
     let lastCommand: Command<CalculatorContext, AnyResult>|undefined = undefined
     function commandHandler(command) {
-      console.log('OLOLO', command)
       lastCommand = command
     }
 
@@ -160,6 +159,31 @@ describe('Processor', () => {
     it('notifies subscribers', async () => {
       processor.commandExecuted.unsubscribe(commandHandler)
       await processor.execute(command)
+      expect(lastCommand).toBeUndefined()
+    })
+  })
+
+  describe('.commandReverted', () => {
+    const command = new DivCommand(2)
+    let lastCommand: Command<CalculatorContext, AnyResult>|undefined = undefined
+    function commandHandler(command) {
+      lastCommand = command
+    }
+
+    beforeEach(async () => {
+      lastCommand = undefined
+      processor.commandReverted.subscribe(commandHandler)
+      await processor.execute(command)
+    })
+
+    it('notifies subscribers', async () => {
+      await processor.revert()
+      expect(lastCommand).not.toBeUndefined()
+    })
+
+    it('notifies subscribers', async () => {
+      processor.commandReverted.unsubscribe(commandHandler)
+      await processor.revert()
       expect(lastCommand).toBeUndefined()
     })
   })
