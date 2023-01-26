@@ -1,4 +1,4 @@
-import { Result } from '@lib/core'
+import { Result, AnyResult } from '@lib/core'
 import { Processor, Command, Transaction } from '@lib/commands'
 
 class CalculatorContext {
@@ -136,6 +136,31 @@ describe('Processor', () => {
 
       await processor.revert()
       expect(context.value).toBe(50)
+    })
+  })
+
+  describe('.commandExecuted', () => {
+    const command = new DivCommand(2)
+    let lastCommand: Command<CalculatorContext, AnyResult>|undefined = undefined
+    function commandHandler(command) {
+      console.log('OLOLO', command)
+      lastCommand = command
+    }
+
+    beforeEach(() => {
+      lastCommand = undefined
+      processor.commandExecuted.subscribe(commandHandler)
+    })
+
+    it('notifies subscribers', async () => {
+      await processor.execute(command)
+      expect(lastCommand).not.toBeUndefined()
+    })
+
+    it('notifies subscribers', async () => {
+      processor.commandExecuted.unsubscribe(commandHandler)
+      await processor.execute(command)
+      expect(lastCommand).toBeUndefined()
     })
   })
 })

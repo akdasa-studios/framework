@@ -1,4 +1,4 @@
-import { AnyResult, Fail, Ok, Result } from '@lib/core'
+import { AnyResult, Fail, Ok, Result, Event } from '@lib/core'
 import { Command } from './Command'
 import { ExecutionStack } from './ExecutionStack'
 import { ProcessorResult } from './ProcessorResult'
@@ -10,6 +10,7 @@ import { Transaction } from './Transaction'
  */
 export class Processor<TContext> {
   private stack = new ExecutionStack()
+  private commandExecutedEvent = new Event<Command<TContext, AnyResult>>()
 
   /**
    * Initialize a new instance of the Processor class.
@@ -18,6 +19,10 @@ export class Processor<TContext> {
   constructor(
     public readonly context: TContext
   ) { }
+
+  get commandExecuted() {
+    return this.commandExecutedEvent
+  }
 
   /**
    * Excecute the command.
@@ -34,6 +39,7 @@ export class Processor<TContext> {
     }
     this.stack.push(command, transaction)
     const commandResult = await command.execute(this.context)
+    this.commandExecuted.notify(command)
     return new ProcessorResult<TResult>(Ok(), commandResult)
   }
 
