@@ -36,14 +36,14 @@ describe('InMemoryRepository', () => {
     it('do not update entity until it saved', async () => {
       order1.clientName = 'George'
       const getResult = await repository.get(order1.id)
-      expect(getResult.value.clientName).toEqual('John')
+      expect(getResult.clientName).toEqual('John')
     })
 
     it('updates entity if it saved', async () => {
       order1.clientName = 'George'
       await repository.save(order1)
       const getResult = await repository.get(order1.id)
-      expect(getResult.value.clientName).toEqual('George')
+      expect(getResult.clientName).toEqual('George')
     })
   })
 
@@ -54,7 +54,7 @@ describe('InMemoryRepository', () => {
   describe('.all', () => {
     it('returns all entities', async () => {
       const result = await repository.all()
-      expect(result.value).toEqual([order1, order2])
+      expect(result).toEqual([order1, order2])
     })
   })
 
@@ -64,15 +64,14 @@ describe('InMemoryRepository', () => {
 
   describe('.get', () => {
     it('returns entity', async () => {
-      const result = (await repository.get(order1.id)).value
+      const result = await repository.get(order1.id)
       expect(result.equals(order1)).toBeTruthy()
     })
 
     it('returns error if entity does not exist', async () => {
       const idNotFound = new OrderId('notFound')
-      const result = await repository.get(idNotFound)
-      expect(result.isFailure).toBeTruthy()
-      expect(result.error).toEqual('Entity \'notFound\' not found')
+      const result = () => repository.get(idNotFound)
+      await expect(result).rejects.toThrowError('Entity \'notFound\' not found')
     })
   })
 
@@ -103,9 +102,8 @@ describe('InMemoryRepository', () => {
 
     it('returns error if entity does not exist', async () => {
       const idNotFound = new OrderId('notFound')
-      const result = await repository.delete(idNotFound)
-      expect(result.isFailure).toBeTruthy()
-      expect(result.error).toEqual('Entity \'notFound\' not found')
+      const result = () => repository.delete(idNotFound)
+      await expect(result).rejects.toThrowError('Entity \'notFound\' not found')
     })
   })
 
@@ -116,12 +114,12 @@ describe('InMemoryRepository', () => {
   describe('.find', () => {
     it('returns entities if found', async () => {
       const result = await repository.find(clientName('John'))
-      expect(result.value).toEqual([order1])
+      expect(result).toEqual([order1])
     })
 
     it('returns empty array if nothing found', async () => {
       const result = await repository.find(clientName('not-found'))
-      expect(result.value).toEqual([])
+      expect(result).toEqual([])
     })
 
     it('raises exception if wrong logical operator passed', async () => {
