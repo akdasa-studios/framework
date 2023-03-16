@@ -1,4 +1,3 @@
-import { Result } from '@lib/core'
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
 import { Query } from '../Query'
 import { Repository } from '../Repository'
@@ -11,38 +10,34 @@ export class InMemoryRepository<
   protected entities = new Map<TEntity['id'], TEntity>()
   protected processor = new InMemoryQueryProcessor<TEntity>()
 
-  async all(): Promise<Result<readonly TEntity[]>> {
-    return Result.ok(Array.from(this.entities.values()))
+  async all(): Promise<readonly TEntity[]> {
+    return Array.from(this.entities.values())
   }
 
-  async save(entity: TEntity): Promise<Result<void, string>> {
+  async save(entity: TEntity): Promise<void> {
     const copy = Object.create(entity)
     Object.assign(copy, entity)
     this.entities.set(entity.id.value, copy)
-    return Result.ok()
   }
 
-  async get(id: TEntity['id']): Promise<Result<TEntity, string>> {
+  async get(id: TEntity['id']): Promise<TEntity> {
     const value = this.entities.get(id.value)
-    if (!value) { return Result.fail(`Entity '${id.value}' not found`) }
-    return Result.ok(value)
+    if (!value) { throw new Error(`Entity '${id.value}' not found`) }
+    return value
   }
 
   async exists(id: TEntity['id']): Promise<boolean> {
     return this.entities.has(id.value)
   }
 
-  async find(query: Query<TEntity>): Promise<Result<readonly TEntity[]>> {
+  async find(query: Query<TEntity>): Promise<readonly TEntity[]> {
     const entities = Array.from(this.entities.values())
-    return Result.ok(this.processor.execute(query, entities))
+    return this.processor.execute(query, entities)
   }
 
-  async delete(id: TEntity['id']): Promise<Result<void, string>> {
+  async delete(id: TEntity['id']): Promise<void> {
     const isExists = await this.exists(id)
-    if (!isExists) {
-      return Result.fail(`Entity '${id.value}' not found`)
-    }
+    if (!isExists) { throw new Error(`Entity '${id.value}' not found`) }
     this.entities.delete(id.value)
-    return Result.ok()
   }
 }

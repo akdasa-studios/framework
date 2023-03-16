@@ -1,4 +1,3 @@
-import { Result } from '@lib/core'
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
 import { Query } from '@lib/persistence'
 
@@ -13,19 +12,19 @@ export interface Repository<
    * Get all entities.
    * @returns All entities.
    */
-  all(): Promise<Result<readonly TEntity[]>>
+  all(): Promise<readonly TEntity[]>
 
   /**
    * Save entity.
    * @param entity Entity to save.
    */
-  save(entity: TEntity): Promise<Result<void, string>>
+  save(entity: TEntity): Promise<void>
 
   /**
    * Get entity by identity.
    * @param id Identity of the entity to load.
    */
-  get(id: TEntity['id']): Promise<Result<TEntity, string>>
+  get(id: TEntity['id']): Promise<TEntity>
 
   /**
    * Check if entity exists.
@@ -37,11 +36,11 @@ export interface Repository<
    * Find entities by query.
    * @param query Query to find entities by.
    */
-  find(query: Query<TEntity>): Promise<Result<readonly TEntity[]>>
+  find(query: Query<TEntity>): Promise<readonly TEntity[]>
 
   /**
    * Delete entity by identity.
    * @param id Identity of the entity to remove.
    */
-  delete(id: TEntity['id']): Promise<Result<void, string>>
+  delete(id: TEntity['id']): Promise<void>
 }
