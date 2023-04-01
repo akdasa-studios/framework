@@ -44,23 +44,17 @@ describe('Processor', () => {
 
     it('returns result of execution', async () => {
       const result = await processor.execute(command)
-      expect(result.isCommandExecuted).toBeTruthy()
-      expect(result.isCommandSucceeded).toBeTruthy()
       expect(result.value).toBe(50) // 100 / 2
     })
 
     it('returns failure if command failed', async () => {
       const result = await processor.execute(new DivCommand(0))
-      expect(result.isCommandExecuted).toBeTruthy()
-      expect(result.isCommandSucceeded).toBeFalsy()
       expect(result.value).toBe('Cannot divide by zero.')
     })
 
-    it('returns failure if command is already executed', async () => {
+    it('throws an error if command is already executed', async () => {
       await processor.execute(command)
-      expect((await processor.execute(command)).isCommandExecuted).toBeFalsy()
-      expect((await processor.execute(command)).processorResult.value).toEqual('Command is already executed.')
-      expect((await processor.execute(command)).value).toBeUndefined()
+      await expect(async () => await processor.execute(command)).rejects.toThrowError('Command is already executed')
     })
   })
 
@@ -80,14 +74,15 @@ describe('Processor', () => {
 
     it('returns success if command is reverted', async () => {
       const result = await processor.revert()
-      expect(result.isCommandExecuted).toBeTruthy()
+      expect(result).not.toHaveLength(0)
     })
 
-    it('returns failure if no command to revert', async () => {
+    it('returns an empty array if no command to revert', async () => {
       await processor.revert()
       const result = await processor.revert()
-      expect(result.isCommandExecuted).toBeFalsy()
-      expect(result.processorResult.value).toEqual('No command to revert.')
+      expect(result).toHaveLength(0)
+      expect(result).toBeDefined()
+      expect(result).toStrictEqual([])
     })
   })
 

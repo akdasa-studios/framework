@@ -1,7 +1,6 @@
-import { AnyResult, Fail, Ok, Result, Event } from '@lib/core'
-import { Command } from './Command'
+import { AnyResult, Event } from '@lib/core'
+import { AnyCommand, Command } from './Command'
 import { ExecutionStack } from './ExecutionStack'
-import { ProcessorResult } from './ProcessorResult'
 import { Transaction } from './Transaction'
 
 
@@ -25,34 +24,32 @@ export class Processor<TContext> {
    * Excecute the command.
    * @param command Command to process.
    * @param transaction Transaction.
-   * @returns {ProcessorResult<TResult>} Returns the result execution.
+   * @returns {TResult} Returns the result of execution.
    */
   async execute<TResult extends AnyResult>(
     command: Command<TContext, TResult>,
     transaction?: Transaction
-  ): Promise<ProcessorResult<TResult>> {
+  ): Promise<TResult> {
     if (this.stack.includes(command)) {
-      return new ProcessorResult(Fail('Command is already executed.'))
+      throw new Error('Command is already executed.')
     }
     this.stack.push(command, transaction)
     const commandResult = await command.execute(this.context)
     this.commandExecuted.notify(command)
-    return new ProcessorResult<TResult>(Ok(), commandResult)
+    return commandResult
   }
 
   /**
    * Revert the last executed command.
+   * @returns List of reverted commands.
    */
-  async revert(): Promise<ProcessorResult<Result<void, string>>> {
+  async revert(): Promise<readonly AnyCommand[]> {
     const commands = this.stack.pop()
-    if (commands.length === 0) {
-      return new ProcessorResult(Fail('No command to revert.'))
-    }
 
     for (const command of commands) {
       await command.revert(this.context)
       this.commandReverted.notify(command)
     }
-    return new ProcessorResult(Ok())
+    return commands
   }
 }
