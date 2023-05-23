@@ -1,6 +1,6 @@
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
 import { Query } from '../Query'
-import { Repository, ResultSet } from '../Repository'
+import { QueryOptions, Repository, ResultSet } from '../Repository'
 import { InMemoryQueryProcessor } from './InMemoryQueryProcessor'
 
 
@@ -36,11 +36,14 @@ export class InMemoryRepository<
 
   async find(
     query: Query<TAggregate>,
-    // options?: QueryOptions,
+    options?: QueryOptions,
   ): Promise<ResultSet<TAggregate>> {
-    const entities = Array.from(this.entities.values())
+    const startIndex = parseInt(options?.bookmark ?? '0', 10)
+    const entities = Array.from(this.entities.values()).slice(startIndex)
     const result = this.processor.execute(query, entities)
-    return new ResultSet<TAggregate>(result) // no bookmark needed, we have all entities in memory
+    return new ResultSet<TAggregate>(
+      result, (startIndex + entities.length).toString()
+    )
   }
 
   async delete(id: TAggregate['id']): Promise<void> {

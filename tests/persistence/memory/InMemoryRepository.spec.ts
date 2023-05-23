@@ -117,6 +117,22 @@ describe('InMemoryRepository', () => {
       expect(result.entities).toEqual([order1])
     })
 
+    /**
+     * Second page should return empty array because there is only one entity with
+     * client name 'John' and we already fetched it in the "arrange" section.
+     */
+    it('respects bookmark', async () => {
+      // arrange:
+      const query = clientName('John')
+      let result = await repository.find(query)
+
+      // act:
+      result = await repository.find(query, { bookmark: result.bookmark })
+
+      // assert:
+      expect(result.entities).toEqual([])
+    })
+
     it('returns empty array if nothing found', async () => {
       const result = await repository.find(clientName('not-found'))
       expect(result.entities).toEqual([])
