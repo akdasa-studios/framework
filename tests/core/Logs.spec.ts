@@ -1,4 +1,4 @@
-import { LogRecord, Logs, LogTransport, Logger, LogLevel } from '@lib/core'
+import { LogRecord, Logs, LogTransport, Logger, LogLevel, MessageLogRecord } from '@lib/core'
 
 
 class MockTransport implements LogTransport {
@@ -17,13 +17,14 @@ describe('LogsController', () => {
 
       Logs.register(transport)
       logger.log(LogLevel.DEBUG, 'message', { test: 'test' })
+      const lastRecord = transport.lastRecord as MessageLogRecord
 
-      expect(transport.lastRecord).toBeDefined()
-      expect(transport.lastRecord?.context).toBe('test')
-      expect(transport.lastRecord?.message).toBe('message')
-      expect(transport.lastRecord?.level).toBe(LogLevel.DEBUG)
-      expect(transport.lastRecord?.timestamp).toBeDefined()
-      expect(transport.lastRecord?.data).toEqual({ test: 'test' })
+      expect(lastRecord).toBeDefined()
+      expect(lastRecord.context).toBe('test')
+      expect(lastRecord.message).toBe('message')
+      expect(lastRecord.level).toBe(LogLevel.DEBUG)
+      expect(lastRecord.timestamp).toBeDefined()
+      expect(lastRecord.data).toEqual({ test: 'test' })
     })
   })
 })
@@ -36,32 +37,60 @@ describe('Logger', () => {
   describe('.log()', () => {
     it('log a message', () => {
       logger.log(LogLevel.DEBUG, 'message')
-      expect(transport.lastRecord?.level).toBe(LogLevel.DEBUG)
+      const lastRecord = transport.lastRecord as MessageLogRecord
+      expect(lastRecord.type).toBe('log')
+      expect(lastRecord.level).toBe(LogLevel.DEBUG)
     })
 
     it('debug level', () => {
       logger.debug('message')
-      expect(transport.lastRecord?.level).toBe(LogLevel.DEBUG)
+      const lastRecord = transport.lastRecord as MessageLogRecord
+      expect(lastRecord.type).toBe('log')
+      expect(lastRecord.level).toBe(LogLevel.DEBUG)
     })
 
     it('info level', () => {
       logger.info('message')
-      expect(transport.lastRecord?.level).toBe(LogLevel.INFO)
+      const lastRecord = transport.lastRecord as MessageLogRecord
+      expect(lastRecord.type).toBe('log')
+      expect(lastRecord.level).toBe(LogLevel.INFO)
     })
 
     it('warn level', () => {
       logger.warn('message')
-      expect(transport.lastRecord?.level).toBe(LogLevel.WARN)
+      const lastRecord = transport.lastRecord as MessageLogRecord
+      expect(lastRecord.type).toBe('log')
+      expect(lastRecord.level).toBe(LogLevel.WARN)
     })
 
     it('error level', () => {
       logger.error('message')
-      expect(transport.lastRecord?.level).toBe(LogLevel.ERROR)
+      const lastRecord = transport.lastRecord as MessageLogRecord
+      expect(lastRecord.type).toBe('log')
+      expect(lastRecord.level).toBe(LogLevel.ERROR)
     })
 
     it('fatal level', () => {
       logger.fatal('message')
-      expect(transport.lastRecord?.level).toBe(LogLevel.FATAL)
+      const lastRecord = transport.lastRecord as MessageLogRecord
+      expect(lastRecord.type).toBe('log')
+      expect(lastRecord.level).toBe(LogLevel.FATAL)
+    })
+  })
+
+  describe('.startGroup()', () => {
+    it('start a group', () => {
+      logger.startGroup('group')
+      const lastRecord = transport.lastRecord as MessageLogRecord
+      expect(lastRecord.type).toBe('start-group')
+    })
+  })
+
+  describe('.endGroup()', () => {
+    it('end a group', () => {
+      logger.endGroup()
+      const lastRecord = transport.lastRecord as MessageLogRecord
+      expect(lastRecord.type).toBe('end-group')
     })
   })
 })

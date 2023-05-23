@@ -13,7 +13,8 @@ export enum LogLevel {
 /**
  * A log record. This is the data that is passed to the transports.
  */
-export interface LogRecord {
+export interface MessageLogRecord {
+  type: 'log'
   level: LogLevel
   context: string
   message: string
@@ -21,6 +22,16 @@ export interface LogRecord {
   data?: unknown
 }
 
+export interface StartGroupLogRecord {
+  type: 'start-group'
+  label: string
+}
+
+export interface EndGroupLogRecord {
+  type: 'end-group'
+}
+
+export type LogRecord = MessageLogRecord | StartGroupLogRecord | EndGroupLogRecord
 
 /**
  * A transport is a class that is responsible for actually logging the data.
@@ -65,12 +76,33 @@ export class Logger {
   ) {}
 
   /**
+   * Start a new group of logs.
+   * @param label Label of the group
+   */
+  public startGroup(label: string) {
+    Logs.log({
+      type: 'start-group',
+      label
+    })
+  }
+
+  /**
+   * End the current group of logs.
+   */
+  public endGroup() {
+    Logs.log({
+      type: 'end-group'
+    })
+  }
+
+  /**
    * Logs a message.
    * @param level Log level
    * @param message Message to log
    */
   public log(level: LogLevel, message: string, data?: unknown) {
     Logs.log({
+      type: 'log',
       level,
       context: this.context,
       message,
