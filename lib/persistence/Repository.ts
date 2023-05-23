@@ -1,6 +1,11 @@
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
 import { Query } from '@lib/persistence'
 
+export interface ResultSetSlice {
+  start: number
+  count: number
+}
+
 /**
  * Result set.
  */
@@ -12,7 +17,7 @@ export class ResultSet<TEntity extends Aggregate<AnyIdentity>> {
    */
   constructor(
     public readonly entities: readonly TEntity[],
-    public readonly bookmark?: string,
+    public readonly slice: ResultSetSlice,
   ) { }
 }
 

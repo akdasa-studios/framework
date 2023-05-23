@@ -14,7 +14,8 @@ export class InMemoryRepository<
   // options?: QueryOptions,
   ): Promise<ResultSet<TAggregate>> {
     return new ResultSet(
-      Array.from(this.entities.values())
+      Array.from(this.entities.values()),
+      { start: 0, count: this.entities.size }
     )
   }
 
@@ -38,11 +39,11 @@ export class InMemoryRepository<
     query: Query<TAggregate>,
     options?: QueryOptions,
   ): Promise<ResultSet<TAggregate>> {
-    const startIndex = parseInt(options?.bookmark ?? '0', 10)
+    const startIndex = options?.skip || 0
     const entities = Array.from(this.entities.values()).slice(startIndex)
     const result = this.processor.execute(query, entities)
     return new ResultSet<TAggregate>(
-      result, (startIndex + entities.length).toString()
+      result, { start: startIndex, count: result.length }
     )
   }
 

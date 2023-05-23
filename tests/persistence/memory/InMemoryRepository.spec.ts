@@ -127,7 +127,7 @@ describe('InMemoryRepository', () => {
       let result = await repository.find(query)
 
       // act:
-      result = await repository.find(query, { bookmark: result.bookmark })
+      result = await repository.find(query, { skip: result.slice.count })
 
       // assert:
       expect(result.entities).toEqual([])
