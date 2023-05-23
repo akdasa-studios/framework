@@ -54,7 +54,7 @@ describe('InMemoryRepository', () => {
   describe('.all', () => {
     it('returns all entities', async () => {
       const result = await repository.all()
-      expect(result).toEqual([order1, order2])
+      expect(result.entities).toEqual([order1, order2])
     })
   })
 
@@ -114,12 +114,12 @@ describe('InMemoryRepository', () => {
   describe('.find', () => {
     it('returns entities if found', async () => {
       const result = await repository.find(clientName('John'))
-      expect(result).toEqual([order1])
+      expect(result.entities).toEqual([order1])
     })
 
     it('returns empty array if nothing found', async () => {
       const result = await repository.find(clientName('not-found'))
-      expect(result).toEqual([])
+      expect(result.entities).toEqual([])
     })
 
     it('raises exception if wrong logical operator passed', async () => {

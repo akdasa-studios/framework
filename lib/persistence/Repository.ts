@@ -1,46 +1,86 @@
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
 import { Query } from '@lib/persistence'
 
+/**
+ * Result set.
+ */
+export class ResultSet<TEntity extends Aggregate<AnyIdentity>> {
+  /**
+   * Initialize result set.
+   * @param entities Entities.
+   * @param bookmark Bookmark.
+   */
+  constructor(
+    public readonly entities: readonly TEntity[],
+    public readonly bookmark?: string,
+  ) { }
+}
+
+/**
+ * Query options.
+ */
+export interface QueryOptions {
+  /**
+   * Maximum number of entities to return.
+   */
+  limit?: number
+
+  /**
+   * Number of entities to skip.
+   */
+  skip?: number
+
+  /**
+   * Bookmark to start the query from.
+   */
+  bookmark?: string
+}
 
 /**
  * Interface for a repository.
  */
 export interface Repository<
-  TEntity extends Aggregate<AnyIdentity>
+  TAggregate extends Aggregate<AnyIdentity>
 > {
   /**
    * Get all entities.
    * @returns All entities.
    */
-  all(): Promise<readonly TEntity[]>
+  all(
+    options?: QueryOptions,
+  ): Promise<ResultSet<TAggregate>>
 
   /**
    * Save entity.
    * @param entity Entity to save.
    */
-  save(entity: TEntity): Promise<void>
+  save(entity: TAggregate): Promise<void>
 
   /**
    * Get entity by identity.
    * @param id Identity of the entity to load.
    */
-  get(id: TEntity['id']): Promise<TEntity>
+  get(id: TAggregate['id']): Promise<TAggregate>
 
   /**
    * Check if entity exists.
    * @param id Identity of the entity to check.
    */
-  exists(id: TEntity['id']): Promise<boolean>
+  exists(id: TAggregate['id']): Promise<boolean>
 
   /**
    * Find entities by query.
    * @param query Query to find entities by.
+   * @param options Query options.
    */
-  find(query: Query<TEntity>): Promise<readonly TEntity[]>
+  find(
+    query: Query<TAggregate>,
+    options?: QueryOptions,
+  ): Promise<ResultSet<TAggregate>>
 
   /**
    * Delete entity by identity.
    * @param id Identity of the entity to remove.
    */
-  delete(id: TEntity['id']): Promise<void>
+  delete(id: TAggregate['id']): Promise<void>
 }
