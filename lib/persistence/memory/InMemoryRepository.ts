@@ -1,6 +1,6 @@
 import { Aggregate, AnyIdentity } from '@lib/domain/models'
 import { Query } from '../Query'
-import { QueryOptions, Repository, ResultSet } from '../Repository'
+import { Repository, ResultSet } from '../Repository'
 import { InMemoryQueryProcessor } from './InMemoryQueryProcessor'
 
 
