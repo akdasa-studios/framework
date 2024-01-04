@@ -1,6 +1,6 @@
 import { InMemoryRepository } from '@lib/persistence'
 import { Expression, LogicalOperators } from '@lib/persistence'
-import { Address, clientName, Order, OrderId } from '../../domain/env'
+import { Address, clientName, expensiveThan, Order, OrderId } from '../../domain/env'
 
 
 describe('InMemoryRepository', () => {
@@ -55,6 +55,26 @@ describe('InMemoryRepository', () => {
     it('returns all entities', async () => {
       const result = await repository.all()
       expect(result.entities).toEqual([order1, order2])
+    })
+
+    it('skip', async () => {
+      const result = await repository.all({ skip: 1})
+      expect(result.entities).toEqual([order2])
+    })
+
+    it('limit', async () => {
+      const result = await repository.all({ limit: 1})
+      expect(result.entities).toEqual([order1])
+    })
+
+    it('skip and limit', async () => {
+      const result = await repository.all({ skip: 1, limit: 1})
+      expect(result.entities).toEqual([order2])
+    })
+
+    it('skip to much', async () => {
+      const result = await repository.all({ skip: 2})
+      expect(result.entities).toEqual([])
     })
   })
 
@@ -121,7 +141,7 @@ describe('InMemoryRepository', () => {
      * Second page should return empty array because there is only one entity with
      * client name 'John' and we already fetched it in the "arrange" section.
      */
-    it('respects bookmark', async () => {
+    it('skip', async () => {
       // arrange:
       const query = clientName('John')
       let result = await repository.find(query)

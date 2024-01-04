@@ -15,9 +15,7 @@ export class InMemoryRepository<
   ): Promise<ResultSet<TAggregate>> {
     let result = Array.from(this.entities.values())
 
-    if (options?.skip !== undefined && options.limit) {
-      result = result.slice(options.skip, options.skip + options.limit)
-    }
+    result = this.slice(result, options?.skip, options?.limit)
 
     return new ResultSet(
       result,
@@ -49,9 +47,7 @@ export class InMemoryRepository<
     let result = this.processor
       .execute(query, Array.from(this.entities.values()))
 
-    if (options?.skip !== undefined && options.limit) {
-      result = result.slice(options.skip, options.skip + options.limit)
-    }
+    result = this.slice(result, options?.skip, options?.limit)
 
     return new ResultSet<TAggregate>(
       result, { start: startIndex, count: result.length }
@@ -62,5 +58,14 @@ export class InMemoryRepository<
     const isExists = await this.exists(id)
     if (!isExists) { throw new Error(`Entity '${id.value}' not found`) }
     this.entities.delete(id.value)
+  }
+
+  private slice(
+    list: readonly TAggregate[],
+    skip: number | undefined,
+    limit: number | undefined
+  ) {
+    // @ts-ignore
+    return list.slice(skip, (skip + limit) || limit)
   }
 }
