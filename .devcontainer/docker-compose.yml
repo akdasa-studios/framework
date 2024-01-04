@@ -1,0 +1,14 @@
+name: framework
+
+services:
+  framework:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        - USER_NAME=${DEVCONTAINER_USER_NAME}
+        - USER_UID=${DEVCONTAINER_USER_ID:-1000}
+        - USER_GID=${DEVCONTAINER_USER_GID:-1000}
+        - GITHUB_TOKEN=${GITHUB_PAT_TOKEN}
+    volumes:
+      - ..:/workspaces
