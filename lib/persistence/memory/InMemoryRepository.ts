@@ -65,6 +65,7 @@ export class InMemoryRepository<
     skip: number | undefined,
     limit: number | undefined
   ) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return list.slice(skip, (skip + limit) || limit)
   }
