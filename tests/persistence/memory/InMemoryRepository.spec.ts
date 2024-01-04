@@ -1,6 +1,6 @@
 import { InMemoryRepository } from '@lib/persistence'
 import { Expression, LogicalOperators } from '@lib/persistence'
-import { Address, clientName, expensiveThan, Order, OrderId } from '../../domain/env'
+import { Address, clientName, Order, OrderId } from '../../domain/env'
 
 
 describe('InMemoryRepository', () => {
