@@ -1,4 +1,4 @@
-import { Aggregate, AnyIdentity, Identity, Value } from '@lib/domain/models'
+import { Aggregate, AnyIdentity, Identity, Value } from '../../domain/models'
 import { Binding, Expression, LogicalOperators, Operators, Predicate, Query } from '../Query'
 
 export class InMemoryQueryProcessor<

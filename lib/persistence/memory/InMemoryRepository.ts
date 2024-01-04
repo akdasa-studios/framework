@@ -11,11 +11,17 @@ export class InMemoryRepository<
   protected processor = new InMemoryQueryProcessor<TAggregate>()
 
   async all(
-  // options?: QueryOptions,
+    options?: QueryOptions,
   ): Promise<ResultSet<TAggregate>> {
+    let result = Array.from(this.entities.values())
+
+    if (options?.skip !== undefined && options.limit) {
+      result = result.slice(options.skip, options.skip + options.limit)
+    }
+
     return new ResultSet(
-      Array.from(this.entities.values()),
-      { start: 0, count: this.entities.size }
+      result,
+      { start: options?.skip || 0, count: result.length }
     )
   }
 
@@ -40,8 +46,13 @@ export class InMemoryRepository<
     options?: QueryOptions,
   ): Promise<ResultSet<TAggregate>> {
     const startIndex = options?.skip || 0
-    const entities = Array.from(this.entities.values()).slice(startIndex)
-    const result = this.processor.execute(query, entities)
+    let result = this.processor
+      .execute(query, Array.from(this.entities.values()))
+
+    if (options?.skip !== undefined && options.limit) {
+      result = result.slice(options.skip, options.skip + options.limit)
+    }
+
     return new ResultSet<TAggregate>(
       result, { start: startIndex, count: result.length }
     )
