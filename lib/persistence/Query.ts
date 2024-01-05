@@ -1,4 +1,4 @@
-import { Aggregate, AnyIdentity } from '@lib/domain/models'
+import { Aggregate, AnyIdentity } from '../domain'
 
 /**
  * Comparison operators. These are used to compare a field with a value.
