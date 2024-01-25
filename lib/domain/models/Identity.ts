@@ -36,7 +36,6 @@ export class Identity<
   /**
    * Identity brand
    */
-  // @ts-ignore
   private __type__: TIdentityType
 }
 

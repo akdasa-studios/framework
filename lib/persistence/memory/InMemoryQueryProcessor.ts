@@ -116,7 +116,6 @@ export class InMemoryQueryProcessor<
     const fields = f.split('.')
     let value = o
     for (const field of fields) {
-      // @ts-ignore
       value = value[field]
     }
     return value

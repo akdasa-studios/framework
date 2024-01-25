@@ -12,7 +12,6 @@ export class Value<TValueType> implements Equalable<Value<TValueType>> {
       this.__type__ === value.__type__ &&
       // Stryker disable next-line all
       Object.keys(this).length === Object.keys(value).length &&
-      // @ts-ignore
       Object.keys(this).every(key => this[key] === value[key])
     )
   }
@@ -20,6 +19,5 @@ export class Value<TValueType> implements Equalable<Value<TValueType>> {
   /**
    * Value type
    */
-  // @ts-ignore
   private __type__: TValueType
 }
