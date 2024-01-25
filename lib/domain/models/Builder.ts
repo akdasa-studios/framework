@@ -1,4 +1,4 @@
-import { Result } from '@lib/core'
+import { Result } from '../../core'
 
 /**
  * Builds a new instance of the specified type or returns a failure result.

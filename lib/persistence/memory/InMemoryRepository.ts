@@ -1,4 +1,4 @@
-import { Aggregate, AnyIdentity } from '@lib/domain/models'
+import { Aggregate, AnyIdentity } from '../../domain/models'
 import { Query } from '../Query'
 import { QueryOptions, Repository, ResultSet } from '../Repository'
 import { InMemoryQueryProcessor } from './InMemoryQueryProcessor'
@@ -11,11 +11,15 @@ export class InMemoryRepository<
   protected processor = new InMemoryQueryProcessor<TAggregate>()
 
   async all(
-  // options?: QueryOptions,
+    options?: QueryOptions,
   ): Promise<ResultSet<TAggregate>> {
+    let result = Array.from(this.entities.values())
+
+    result = this.slice(result, options?.skip, options?.limit)
+
     return new ResultSet(
-      Array.from(this.entities.values()),
-      { start: 0, count: this.entities.size }
+      result,
+      { start: options?.skip || 0, count: result.length }
     )
   }
 
@@ -40,8 +44,11 @@ export class InMemoryRepository<
     options?: QueryOptions,
   ): Promise<ResultSet<TAggregate>> {
     const startIndex = options?.skip || 0
-    const entities = Array.from(this.entities.values()).slice(startIndex)
-    const result = this.processor.execute(query, entities)
+    let result = this.processor
+      .execute(query, Array.from(this.entities.values()))
+
+    result = this.slice(result, options?.skip, options?.limit)
+
     return new ResultSet<TAggregate>(
       result, { start: startIndex, count: result.length }
     )
@@ -51,5 +58,15 @@ export class InMemoryRepository<
     const isExists = await this.exists(id)
     if (!isExists) { throw new Error(`Entity '${id.value}' not found`) }
     this.entities.delete(id.value)
+  }
+
+  private slice(
+    list: readonly TAggregate[],
+    skip: number | undefined,
+    limit: number | undefined
+  ) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return list.slice(skip, (skip + limit) || limit)
   }
 }

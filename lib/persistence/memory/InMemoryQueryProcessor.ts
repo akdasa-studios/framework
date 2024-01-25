@@ -1,4 +1,4 @@
-import { Aggregate, AnyIdentity, Identity, Value } from '@lib/domain/models'
+import { Aggregate, AnyIdentity, Identity, Value } from '../../domain/models'
 import { Binding, Expression, LogicalOperators, Operators, Predicate, Query } from '../Query'
 
 export class InMemoryQueryProcessor<
@@ -72,14 +72,14 @@ export class InMemoryQueryProcessor<
           return a.filter(x => x.includes(b)).length > 0
         } else if (typeof a === 'string') {
           // Stryker disable next-line all
-          const normalize = (str) => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          const normalize = (str: string) => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
           return normalize(a).includes(normalize(b))
         }
         return false
       },
       [Operators.In]: (a, b) => {
-        if (a instanceof Value)         { return b.findIndex(x => x.equals(a)) !== -1 }
-        else if (a instanceof Identity) { return b.findIndex(x => x.equals(a)) !== -1 }
+        if (a instanceof Value)         { return b.findIndex((x: Value<unknown>) => x.equals(a)) !== -1 }
+        else if (a instanceof Identity) { return b.findIndex((x: Identity<unknown, unknown>) => x.equals(a)) !== -1 }
         else return b.includes(a)
       },
     }
@@ -112,7 +112,7 @@ export class InMemoryQueryProcessor<
   }
 
   private getFieldValue(f: Binding<TEntity>, o: TEntity) {
-    // get netsed field value by string separated by dots
+    // get nested field value by string separated by dots
     const fields = f.split('.')
     let value = o
     for (const field of fields) {

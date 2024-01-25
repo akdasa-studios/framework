@@ -1,5 +1,5 @@
-import { Aggregate, AnyIdentity } from '@lib/domain/models'
-import { Query } from '@lib/persistence'
+import { Aggregate, AnyIdentity } from '../domain/models'
+import { Query } from '../persistence'
 
 export interface ResultSetSlice {
   start: number
