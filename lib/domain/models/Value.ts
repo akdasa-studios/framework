@@ -1,4 +1,5 @@
-import { type Equalable } from './Interfaces'
+import { type Equalable } from '@akd-studios/framework/domain/models'
+
 
 export class Value<TValueType> implements Equalable<Value<TValueType>> {
   /**

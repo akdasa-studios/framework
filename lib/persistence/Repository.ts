@@ -1,5 +1,6 @@
-import { Aggregate, type AnyIdentity } from '../domain/models'
-import { type Query } from '../persistence'
+import { Aggregate, type AnyIdentity } from '@akd-studios/framework/domain'
+import { type Query } from '@akd-studios/framework/persistence'
+
 
 export interface ResultSetSlice {
   start: number

@@ -1,5 +1,6 @@
-import { Aggregate, type AnyIdentity, Identity, Value } from '../../domain/models'
-import { type Binding, Expression, LogicalOperators, Operators, Predicate, type Query } from '../Query'
+import { Aggregate, type AnyIdentity, Identity, Value } from '@akd-studios/framework/domain/models'
+import { type Binding, Expression, LogicalOperators, Operators, Predicate, type Query } from '@akd-studios/framework/persistence'
+
 
 export class InMemoryQueryProcessor<
   TEntity extends Aggregate<AnyIdentity>

@@ -1,4 +1,4 @@
-import { type AnyResult } from '../core'
+import { type AnyResult } from '@akd-studios/framework/core'
 
 
 /**

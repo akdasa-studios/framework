@@ -1,4 +1,4 @@
-import { Result } from '../../core'
+import { Result } from '@akd-studios/framework/core'
 
 /**
  * Builds a new instance of the specified type or returns a failure result.

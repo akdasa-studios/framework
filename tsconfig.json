@@ -22,9 +22,6 @@
       "@akd-studios/framework/*": [
         "./lib/*"
       ],
-      "@lib/*": [
-        "./lib/*"
-      ],
       "@tests/*": [
         "./tests/*"
       ]

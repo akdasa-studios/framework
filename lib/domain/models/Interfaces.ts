@@ -1,5 +1,4 @@
-import { Identity } from './Identity'
-
+import { Identity } from '@akd-studios/framework/domain/models'
 
 /**
  * Identifiable is an interface for all objects that have an identity.
