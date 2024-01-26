@@ -1,4 +1,4 @@
-import { Entity, Identity } from '@akd-studios/framework/domain'
+import { Entity, Identity } from '@akd-studios/framework/domain/models'
 
 
 /**

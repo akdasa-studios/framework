@@ -1,6 +1,6 @@
+export * from './Entity'
 export * from './Aggregate'
 export * from './Builder'
-export * from './Entity'
 export * from './Identity'
 export * from './Interfaces'
 export * from './Value'
