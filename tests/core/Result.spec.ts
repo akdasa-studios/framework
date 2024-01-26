@@ -1,4 +1,4 @@
-import { Result } from '@lib/core'
+import { Result } from '@akd-studios/framework/core'
 
 describe('Result', () => {
 

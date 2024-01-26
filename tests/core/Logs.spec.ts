@@ -1,4 +1,4 @@
-import { LogRecord, Logs, LogTransport, Logger, LogLevel, MessageLogRecord } from '@lib/core'
+import { LogRecord, Logs, LogTransport, Logger, LogLevel, MessageLogRecord } from '@akd-studios/framework/core'
 
 
 class MockTransport implements LogTransport {

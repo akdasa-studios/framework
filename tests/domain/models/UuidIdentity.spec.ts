@@ -1,4 +1,4 @@
-import { UuidIdentity } from '@lib/domain/models'
+import { UuidIdentity } from '@akd-studios/framework/domain/models'
 
 describe('UuidIdentity', () => {
 

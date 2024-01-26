@@ -1,5 +1,5 @@
-import { Result, AnyResult } from '@lib/core'
-import { Processor, Command, Transaction } from '@lib/commands'
+import { Result, AnyResult } from '@akd-studios/framework/core'
+import { Processor, Command, Transaction } from '@akd-studios/framework/commands'
 
 class CalculatorContext {
   constructor(public value: number) { }

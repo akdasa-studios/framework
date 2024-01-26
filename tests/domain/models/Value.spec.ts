@@ -1,4 +1,4 @@
-import { Value } from '@lib/domain/models'
+import { Value } from '@akd-studios/framework/domain/models'
 
 
 class Name extends Value<'Name'> {
