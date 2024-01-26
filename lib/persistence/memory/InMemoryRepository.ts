@@ -1,6 +1,6 @@
-import { Aggregate, AnyIdentity } from '../../domain/models'
-import { Query } from '../Query'
-import { QueryOptions, Repository, ResultSet } from '../Repository'
+import { Aggregate, type AnyIdentity } from '../../domain/models'
+import { type Query } from '../Query'
+import { type QueryOptions, type Repository, ResultSet } from '../Repository'
 import { InMemoryQueryProcessor } from './InMemoryQueryProcessor'
 
 

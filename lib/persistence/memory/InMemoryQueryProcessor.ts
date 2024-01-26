@@ -1,5 +1,5 @@
-import { Aggregate, AnyIdentity, Identity, Value } from '../../domain/models'
-import { Binding, Expression, LogicalOperators, Operators, Predicate, Query } from '../Query'
+import { Aggregate, type AnyIdentity, Identity, Value } from '../../domain/models'
+import { type Binding, Expression, LogicalOperators, Operators, Predicate, type Query } from '../Query'
 
 export class InMemoryQueryProcessor<
   TEntity extends Aggregate<AnyIdentity>
@@ -116,6 +116,8 @@ export class InMemoryQueryProcessor<
     const fields = f.split('.')
     let value = o
     for (const field of fields) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       value = value[field]
     }
     return value

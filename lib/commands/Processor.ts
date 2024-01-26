@@ -1,5 +1,5 @@
-import { AnyResult, Event } from '@lib/core'
-import { AnyCommand, Command } from './Command'
+import { type AnyResult, Event } from '../core'
+import { type AnyCommand, type Command } from './Command'
 import { ExecutionStack } from './ExecutionStack'
 import { Transaction } from './Transaction'
 

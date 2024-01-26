@@ -1,4 +1,4 @@
-import { AnyCommand } from './Command'
+import { type AnyCommand } from './Command'
 import { Transaction } from './Transaction'
 
 
