@@ -36,6 +36,8 @@ export class Identity<
   /**
    * Identity brand
    */
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private __type__: TIdentityType
 }
 

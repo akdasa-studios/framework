@@ -1,4 +1,4 @@
-import { AnyResult } from '@lib/core'
+import { type AnyResult } from '@akd-studios/framework/core'
 
 
 /**
@@ -19,7 +19,7 @@ export interface Command<
    * Reverts the command.
    * @param context The context in which the command is reverted.
    */
-  revert(context: TContext)
+  revert(context: TContext): Promise<void>
 }
 
 /**

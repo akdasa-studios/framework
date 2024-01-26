@@ -1,5 +1,5 @@
-import { InMemoryRepository } from '@lib/persistence'
-import { Expression, LogicalOperators } from '@lib/persistence'
+import { InMemoryRepository } from '@akd-studios/framework/persistence'
+import { Expression, LogicalOperators } from '@akd-studios/framework/persistence'
 import { Address, clientName, Order, OrderId } from '../../domain/env'
 
 

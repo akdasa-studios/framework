@@ -1,4 +1,4 @@
-import { Identity } from '@lib/domain/models'
+import { Identity } from '@akd-studios/framework/domain/models'
 
 
 describe('Identity', () => {

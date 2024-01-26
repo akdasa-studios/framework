@@ -1,5 +1,5 @@
-import { Expression, LogicalOperators, QueryBuilder } from '@lib/persistence'
-import { InMemoryQueryProcessor } from '@lib/persistence/memory/InMemoryQueryProcessor'
+import { Expression, LogicalOperators, QueryBuilder } from '@akd-studios/framework/persistence'
+import { InMemoryQueryProcessor } from '@akd-studios/framework/persistence/memory/InMemoryQueryProcessor'
 import { address, Address, clientName, Order, OrderId, price } from '../../domain/env'
 
 

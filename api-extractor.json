@@ -7,7 +7,7 @@
     "overrideTsconfig": {
       "compilerOptions": {
         "paths": {
-          "@lib/*": [
+          "@akd-studios/framework/*": [
             "./temp/*"
           ]
         }

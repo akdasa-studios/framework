@@ -15,7 +15,7 @@ jobs:
       - name: 📦 Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://npm.pkg.github.com'
           cache: npm
 
@@ -47,7 +47,7 @@ jobs:
       - name: 📦 Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://npm.pkg.github.com'
           cache: npm
 

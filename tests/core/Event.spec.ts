@@ -1,4 +1,4 @@
-import { Event } from '@lib/core'
+import { Event } from '@akd-studios/framework/core'
 
 describe('Event', () => {
 

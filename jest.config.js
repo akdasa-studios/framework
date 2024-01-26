@@ -8,7 +8,7 @@ module.exports = {
     '<rootDir>/tests/**/*.spec.ts'
   ],
   moduleNameMapper: {
-    '^@lib/(.*)': '<rootDir>/lib/$1',
+    '^@akd-studios/framework/(.*)': '<rootDir>/lib/$1',
     '^@tests/(.*)': '<rootDir>/tests/$1',
   }
 }

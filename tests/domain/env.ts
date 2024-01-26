@@ -1,5 +1,5 @@
-import { Aggregate, Entity, Identity, Value } from '@lib/domain/models'
-import { QueryBuilder } from '@lib/persistence'
+import { Aggregate, Entity, Identity, Value } from '@akd-studios/framework/domain/models'
+import { QueryBuilder } from '@akd-studios/framework/persistence'
 
 
 export class OrderId extends Identity<string, 'Order'> {}

@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "experimentalDecorators": true,
     "paths": {
-      "@lib/*": [
+      "@akd-studios/framework/*": [
         "./lib/*"
       ],
       "@tests/*": [

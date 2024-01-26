@@ -1,4 +1,5 @@
-import { Equalable } from './Interfaces'
+import { type Equalable } from '@akd-studios/framework/domain/models'
+
 
 export class Value<TValueType> implements Equalable<Value<TValueType>> {
   /**
@@ -12,6 +13,8 @@ export class Value<TValueType> implements Equalable<Value<TValueType>> {
       this.__type__ === value.__type__ &&
       // Stryker disable next-line all
       Object.keys(this).length === Object.keys(value).length &&
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       Object.keys(this).every(key => this[key] === value[key])
     )
   }
@@ -19,5 +22,7 @@ export class Value<TValueType> implements Equalable<Value<TValueType>> {
   /**
    * Value type
    */
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private __type__: TValueType
 }

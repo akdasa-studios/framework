@@ -1,6 +1,4 @@
-import { Identity } from './Identity'
-import { Equalable, Identifiable } from './Interfaces'
-
+import { type Equalable, type Identifiable, Identity } from '@akd-studios/framework/domain/models'
 
 /**
  * Base class for all entities.

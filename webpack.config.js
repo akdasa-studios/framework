@@ -17,7 +17,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
-      '@lib': path.resolve(__dirname, './lib'),
+      '@akd-studios/framework': path.resolve(__dirname, './lib'),
     }
   },
   module: {

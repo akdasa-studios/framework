@@ -1,6 +1,5 @@
-import { Aggregate, AnyIdentity } from '../../domain/models'
-import { Query } from '../Query'
-import { QueryOptions, Repository, ResultSet } from '../Repository'
+import { Aggregate, type AnyIdentity } from '@akd-studios/framework/domain/models'
+import { type Query, type QueryOptions, type Repository, ResultSet } from '@akd-studios/framework/persistence'
 import { InMemoryQueryProcessor } from './InMemoryQueryProcessor'
 
 
