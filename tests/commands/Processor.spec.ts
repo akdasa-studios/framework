@@ -5,19 +5,28 @@ class CalculatorContext {
   constructor(public value: number) { }
 }
 
-class DivCommand implements Command<CalculatorContext, Result<number, string>> {
+class DivCommand implements
+  Command<
+    CalculatorContext,
+    Result<number, string>
+  >
+{
   private _prevValue = 0
   constructor(public readonly divisor: number) { }
 
-  async execute(context: CalculatorContext): Promise<Result<number, string>> {
+  async execute(
+    context: CalculatorContext
+  ): Promise<Result<number, string>> {
     if (this.divisor === 0) { return Result.fail('Cannot divide by zero.') }
     this._prevValue = context.value
     context.value = context.value / this.divisor
     return Result.ok(context.value)
   }
-  revert(context: CalculatorContext): Result<number, string> {
+  async revert(
+    context: CalculatorContext
+  ): Promise<void> {
     context.value = this._prevValue
-    return Result.ok(context.value)
+    // return Result.ok(context.value)
   }
 }
 
@@ -72,10 +81,6 @@ describe('Processor', () => {
       expect(context.value).toBe(100) // 50 -> 100
     })
 
-    it('returns success if command is reverted', async () => {
-      const result = await processor.revert()
-      expect(result).not.toHaveLength(0)
-    })
 
     it('returns an empty array if no command to revert', async () => {
       await processor.revert()
